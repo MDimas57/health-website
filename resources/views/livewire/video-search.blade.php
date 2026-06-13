@@ -130,7 +130,7 @@
                         >
 
                             <div
-                                class="w-20 h-20 rounded-full
+                                class="w-14 h-14 rounded-full
                                        bg-red-500/90
                                        backdrop-blur-md
                                        flex items-center justify-center
@@ -162,7 +162,7 @@
                                        px-3 py-1 rounded-full"
                             >
 
-                                🎥 {{ $video->category->name ?? 'Video' }}
+                                 {{ $video->category->name ?? 'Video' }}
 
                             </span>
 
@@ -188,8 +188,6 @@
                         </div>
 
                     </div>
-
-
 
                     {{-- CONTENT --}}
                     <div class="p-6">
@@ -236,49 +234,51 @@
 
 
 
-                {{-- MODAL --}}
-                <div
-                    x-show="open"
-                    x-transition
-                    x-cloak
-                    class="fixed inset-0 z-[9999]
-                           bg-black/95
-                           flex items-center justify-center
-                           p-4"
-                >
+                        {{-- MODAL --}}
+                    <template x-if="open">
 
-                    {{-- CLOSE --}}
-                    <button
-                        @click="open = false"
-                        class="absolute top-6 right-6
-                               w-12 h-12 rounded-full
-                               bg-white/10 backdrop-blur-md
-                               text-white text-2xl
-                               hover:bg-white/20 transition"
-                    >
-                        ✕
+                        <div
+                            x-transition
+                            class="fixed inset-0 z-[9999]
+                                bg-black/95
+                                flex items-center justify-center
+                                p-4"
+                        >
 
-                    </button>
+                            {{-- CLOSE --}}
+                            <button
+                                @click="open = false"
+                                class="absolute top-6 right-6
+                                    w-12 h-12 rounded-full
+                                    bg-white/10 backdrop-blur-md
+                                    text-white text-2xl
+                                    hover:bg-white/20 transition"
+                            >
+                                ✕
+
+                            </button>
 
 
 
-                    {{-- VIDEO --}}
-                    <div
-                        class="w-full max-w-5xl
-                               aspect-video rounded-3xl
-                               overflow-hidden shadow-2xl"
-                    >
+                            {{-- VIDEO --}}
+                            <div
+                                class="w-full max-w-5xl
+                                    aspect-video rounded-3xl
+                                    overflow-hidden shadow-2xl"
+                            >
 
-                        <iframe
-                            src="https://www.youtube.com/embed/{{ \Illuminate\Support\Str::afterLast($video->youtube_url, '=') }}"
-                            class="w-full h-full"
-                            allowfullscreen
-                        ></iframe>
+                                <iframe
+                                    src="https://www.youtube.com/embed/{{ \Illuminate\Support\Str::afterLast($video->youtube_url, '=') }}?autoplay=1"
+                                    class="w-full h-full"
+                                    allow="autoplay"
+                                    allowfullscreen
+                                ></iframe>
 
-                    </div>
+                            </div>
 
-                </div>
+                        </div>
 
+                    </template>
             </div>
 
         @empty

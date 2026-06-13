@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Post;
+use App\Models\Poster;
 use App\Models\Category;
 
 class PosterSearch extends Component
@@ -18,10 +18,18 @@ class PosterSearch extends Component
     public $sort = 'latest';
 
     protected $queryString = [
+
         'q' => ['except' => ''],
         'category' => ['except' => ''],
         'sort' => ['except' => 'latest'],
+
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | RESET PAGINATION
+    |--------------------------------------------------------------------------
+    */
 
     public function updatingQ()
     {
@@ -38,12 +46,17 @@ class PosterSearch extends Component
         $this->resetPage();
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | RENDER
+    |--------------------------------------------------------------------------
+    */
+
     public function render()
     {
-        $query = Post::query()
-            ->where('type', 'poster')
-            ->where('status', 'published')
-            ->with('category');
+        $query = Poster::query()
+            ->published()
+            ->with(['category', 'user']);
 
         /*
         |--------------------------------------------------------------------------
@@ -56,7 +69,7 @@ class PosterSearch extends Component
             $query->where(function ($q) {
 
                 $q->where('title', 'like', '%' . $this->q . '%')
-                  ->orWhere('content', 'like', '%' . $this->q . '%');
+                  ->orWhere('description', 'like', '%' . $this->q . '%');
 
             });
 

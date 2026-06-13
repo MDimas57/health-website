@@ -16,16 +16,6 @@
                 Artikel Kesehatan
 
             </h1>
-
-            {{-- DESCRIPTION --}}
-            <p class="text-slate-500 text-lg leading-relaxed mt-5">
-
-                Temukan berbagai informasi kesehatan terpercaya mulai dari
-                pola hidup sehat, gizi, kesehatan mental, hingga tips medis
-                terbaru yang disajikan secara informatif dan mudah dipahami.
-
-            </p>
-
         </div>
 
         @livewire('article-search')

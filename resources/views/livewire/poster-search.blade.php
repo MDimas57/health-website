@@ -198,7 +198,7 @@
                                     shadow-2xl
                                     flex items-center gap-2"
                             >
-                                🔍 Lihat Poster
+                                Lihat Poster
                             </button>
 
                         </div>
@@ -254,7 +254,7 @@
                                        leading-relaxed"
                             >
 
-                                {{ Str::limit(strip_tags($poster->content), 120) }}
+                                {{ Str::limit(strip_tags($poster->description), 120) }}
 
                             </p>
 

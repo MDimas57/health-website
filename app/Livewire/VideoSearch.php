@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Post;
+use App\Models\Video;
 use App\Models\Category;
 
 class VideoSearch extends Component
@@ -18,11 +18,9 @@ class VideoSearch extends Component
     public $sort = 'latest';
 
     protected $queryString = [
-
         'q' => ['except' => ''],
         'category' => ['except' => ''],
         'sort' => ['except' => 'latest'],
-
     ];
 
     public function updatingQ()
@@ -42,9 +40,8 @@ class VideoSearch extends Component
 
     public function render()
     {
-        $query = Post::query()
-            ->where('type', 'video')
-            ->where('status', 'published')
+        $query = Video::query()
+            ->published()
             ->with(['category', 'user']);
 
         /*
@@ -58,7 +55,7 @@ class VideoSearch extends Component
             $query->where(function ($q) {
 
                 $q->where('title', 'like', '%' . $this->q . '%')
-                  ->orWhere('content', 'like', '%' . $this->q . '%');
+                  ->orWhere('description', 'like', '%' . $this->q . '%');
 
             });
 

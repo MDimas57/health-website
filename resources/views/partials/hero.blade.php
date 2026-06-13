@@ -18,21 +18,6 @@
     <div class="max-w-[1200px] mx-auto w-full px-4 lg:px-8 relative z-10">
 
         <div class="max-w-[620px]">
-
-            {{-- BADGE --}}
-            <div class="inline-flex items-center gap-2
-                        bg-white/10 backdrop-blur-md
-                        border border-white/20
-                        px-4 py-2 rounded-full mb-6">
-
-                <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-
-                <span class="text-white text-sm font-medium">
-                    Portal Edukasi Kesehatan Modern
-                </span>
-
-            </div>
-
             {{-- TITLE --}}
             <h1 class="text-4xl lg:text-5xl font-bold text-white leading-tight">
 
