@@ -34,6 +34,10 @@ class PostResource extends Resource
     {
         return PostsTable::configure($table);
     }
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('super_admin');
+    }
 
     public static function getPages(): array
     {

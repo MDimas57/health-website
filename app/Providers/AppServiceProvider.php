@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\Category;
 use Illuminate\Support\Facades\View;
 use App\Models\Post;
+use App\Observers\CategoryObserver;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -17,12 +18,13 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-
+    
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
+        Category::observe(CategoryObserver::class);
         View::composer('layouts.public', function ($view) {
         $view->with('navCategories', Category::orderBy('name')->get());
          });

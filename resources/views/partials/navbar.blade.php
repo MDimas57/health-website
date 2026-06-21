@@ -157,64 +157,6 @@
 
             </div>
 
-            {{-- RIGHT --}}
-            <div class="flex items-center gap-4">
-
-                {{-- SEARCH --}}
-                <form action="{{ route('search') }}"
-                      method="GET"
-                      class="hidden lg:flex items-center gap-3">
-
-                    <div class="flex items-center
-                                bg-white/10 border border-white/10
-                                backdrop-blur-md
-                                rounded-full
-                                px-5 h-10 w-[360px]">
-
-                        <input
-                            type="text"
-                            name="q"
-                            value="{{ request('q') }}"
-                            placeholder="Cari konten kesehatan..."
-                            class="w-full bg-transparent
-                                   text-white placeholder:text-emerald-100
-                                   border-none outline-none focus:ring-0
-                                   text-[14px]"
-                        >
-
-                    </div>
-
-                    <button type="submit"
-                            class="bg-white text-[#0f3b2e]
-                                   px-7 h-10 rounded-full
-                                   font-semibold text-sm
-                                   hover:bg-emerald-50 transition">
-
-                        Cari
-
-                    </button>
-
-                </form>
-
-                {{-- LOGIN --}}
-                <a href="{{ route('filament.admin.auth.login') }}"
-                   class="hidden md:flex items-center justify-center
-                          w-10 h-10 rounded-full
-                          bg-white/10 border border-white/10
-                          text-white hover:bg-white/20 transition">
-
-                    <i class="ti ti-user text-[28px]"></i>
-
-                </a>
-
-                {{-- MOBILE --}}
-                <button class="xl:hidden text-white">
-
-                    <i class="ti ti-menu-2 text-4xl"></i>
-
-                </button>
-
-            </div>
 
         </div>
 

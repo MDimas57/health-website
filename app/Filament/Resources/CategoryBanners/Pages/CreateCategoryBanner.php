@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\Articles\Pages;
+namespace App\Filament\Resources\CategoryBanners\Pages;
 
-use App\Filament\Resources\Articles\ArticleResource;
+use App\Filament\Resources\CategoryBanners\CategoryBannerResource;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateArticle extends CreateRecord
+class CreateCategoryBanner extends CreateRecord
 {
-    protected static string $resource = ArticleResource::class;
-
+    protected static string $resource = CategoryBannerResource::class;
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['category_id'] = auth()->user()->category_id;
-
         $data['user_id'] = auth()->id();
-        $data['published_at'] = now();
 
         return $data;
     }

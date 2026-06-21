@@ -33,6 +33,10 @@ class UserResource extends Resource
     {
         return UsersTable::configure($table);
     }
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('super_admin');
+    }
 
     public static function getRelations(): array
     {

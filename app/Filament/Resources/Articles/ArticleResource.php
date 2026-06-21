@@ -7,7 +7,7 @@ use Filament\Resources\Resource;
 use App\Filament\Resources\Articles\Pages;
 use App\Filament\Resources\Articles\Schemas\ArticleForm;
 use App\Filament\Resources\Articles\Tables\ArticlesTable;
-
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 
@@ -32,6 +32,21 @@ class ArticleResource extends Resource
     public static function table(Table $table): Table
     {
         return ArticlesTable::configure($table);
+    }
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (auth()->user()->hasRole('super_admin')) {
+
+            return $query;
+
+        }
+
+        return $query->where(
+            'category_id',
+            auth()->user()->category_id
+        );
     }
 
     public static function getPages(): array

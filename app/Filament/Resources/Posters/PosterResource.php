@@ -10,6 +10,7 @@ use App\Filament\Resources\Posters\Tables\PostersTable;
 
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 use UnitEnum;
 use BackedEnum;
@@ -32,6 +33,19 @@ class PosterResource extends Resource
     public static function table(Table $table): Table
     {
         return PostersTable::configure($table);
+    }
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (auth()->user()->hasRole('super_admin')) {
+            return $query;
+        }
+
+        return $query->where(
+            'category_id',
+            auth()->user()->category_id
+        );
     }
 
     public static function getPages(): array

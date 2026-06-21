@@ -18,9 +18,9 @@ class PosterForm
 
                 Select::make('category_id')
                     ->relationship('category', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+                    ->required()
+                    ->default(fn () => auth()->user()->category_id)
+                    ->disabled(fn () => ! auth()->user()->hasRole('super_admin')),
 
                 TextInput::make('title')
                     ->required()

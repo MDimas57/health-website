@@ -35,6 +35,10 @@ class CategoryResource extends Resource
     {
         return CategoryInfolist::configure($schema);
     }
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('super_admin');
+    }
 
     public static function table(Table $table): Table
     {

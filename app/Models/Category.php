@@ -50,4 +50,13 @@ class Category extends Model
     {
         return $this->hasMany(Video::class);
     }
+
+    public function banners()
+    {
+        return $this->hasMany(CategoryBanner::class);
+    }
+public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

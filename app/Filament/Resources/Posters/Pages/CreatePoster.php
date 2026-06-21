@@ -11,6 +11,7 @@ class CreatePoster extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        $data['category_id'] = auth()->user()->category_id;
         $data['user_id'] = auth()->id();
 
         if ($data['status'] === 'published') {

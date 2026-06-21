@@ -18,11 +18,11 @@ class ArticleForm
         return $schema
             ->components([
 
-                Select::make('category_id')
-                    ->relationship('category', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+              Select::make('category_id')
+                ->relationship('category', 'name')
+                ->required()
+                ->default(fn () => auth()->user()->category_id)
+                ->disabled(fn () => ! auth()->user()->hasRole('super_admin')),
 
                 TextInput::make('title')
                     ->required()
