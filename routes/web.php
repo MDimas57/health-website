@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,8 @@ Route::get('/videos/{slug}', [PublicController::class, 'videoShow'])
     ->name('videos.show');
 
 
+
+
 /*
 |--------------------------------------------------------------------------
 | CATEGORY
@@ -77,3 +80,8 @@ Route::get('/posters', [PublicController::class, 'posters'])
     ->name('posters.index');
 Route::get('/videos', [PublicController::class, 'videos'])
     ->name('videos.index');
+
+Route::get(
+    '/category/{slug}',
+    [CategoryController::class, 'show']
+)->name('category.show');

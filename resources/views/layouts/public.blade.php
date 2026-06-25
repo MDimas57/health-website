@@ -5,6 +5,11 @@
   <title>@yield('title', 'PortalSehat')</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+<style>
+[x-cloak]{
+    display:none !important;
+}
+</style>
  @stack('scripts')
 <body class="bg-[#faf9f7] text-slate-800">
   @include('partials.navbar')

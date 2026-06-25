@@ -1,244 +1,198 @@
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<style>
+@keyframes rotateWords {
+    0%, 25% {
+        transform: translateY(0);
+    }
 
-{{-- DATA --}}
-@php
+    33%, 58% {
+        transform: translateY(-60px);
+    }
 
-    use App\Models\Article;
-    use App\Models\Poster;
-    use App\Models\Video;
+    66%, 91% {
+        transform: translateY(-120px);
+    }
 
-    /*
-    |--------------------------------------------------------------------------
-    | FEATURED ARTICLE
-    |--------------------------------------------------------------------------
-    */
+    100% {
+        transform: translateY(-180px);
+    }
+}
 
-    $featuredArticle = Article::with('category')
-        ->where('status', 'published')
-        ->latest('published_at')
-        ->first();
+.animate-rotate-words {
+    animation: rotateWords 9s infinite;
+}
+</style>
+<section class="relative w-screen
+           left-1/2 -translate-x-1/2
+           bg-white
+           py-24
+           overflow-hidden">
 
-    $featuredPosters = Poster::with('category')
-        ->where('status', 'published')
-        ->latest('published_at')
-        ->take(5)
-        ->get();
+    <div class="max-w-7xl mx-auto px-4 lg:px-8">
 
-    $latestArticles = Article::with('category')
-        ->where('status', 'published')
-        ->when($featuredArticle, function ($query) use ($featuredArticle) {
-            $query->where('id', '!=', $featuredArticle->id);
-        })
-        ->latest('published_at')
-        ->take(2)
-        ->get()
-        ->map(function ($item) {
-            $item->content_type = 'article';
-            return $item;
-        });
+        {{-- HEADER --}}
+        <div
+                x-data="{
+                    words: ['Artikel', 'Video', 'Poster Kesehatan'],
+                    current: 0,
+                    init() {
+                        setInterval(() => {
+                            this.current = (this.current + 1) % this.words.length
+                        }, 2500)
+                    }
+                }"
+                class="max-w-2xl mx-auto text-center mb-20"
+            >
 
-    /*
-    |--------------------------------------------------------------------------
-    | LATEST VIDEOS
-    |--------------------------------------------------------------------------
-    */
+                <span
+                    class="inline-flex items-center gap-2
+                        px-4 py-2 rounded-full
+                        bg-emerald-50
+                        border border-emerald-100
+                        text-emerald-700 text-sm font-medium"
+                >
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    Konten Terbaru
+                </span>
 
-    $latestVideos = Video::with('category')
-        ->where('status', 'published')
-        ->latest('published_at')
-        ->take(2)
-        ->get()
-        ->map(function ($item) {
-            $item->content_type = 'video';
-            return $item;
-        });
+                <h2 class="mt-6 text-4xl lg:text-5xl font-bold text-center">
 
-    /*
-    |--------------------------------------------------------------------------
-    | MERGE CONTENT
-    |--------------------------------------------------------------------------
-    */
+                    <div
+    x-data="{
+        words:['Artikel','Video','Poster'],
+        current:0,
+        init(){
+            setInterval(()=>{
+                this.current=(this.current+1)%this.words.length
+            },2500)
+        }
+    }"
+    class="flex justify-center items-center gap-2"
+>
 
-    $latestPosts = $latestArticles
-        ->merge($latestVideos)
-        ->sortByDesc('published_at')
-        ->take(3);
+    <div class="relative w-[140px] h-[70px]">
 
-@endphp
+        <template x-for="(word,index) in words" :key="index">
 
+            <span
+                x-show="current===index"
+                x-transition:enter="transition duration-700 ease-out"
+                x-transition:enter-start="opacity-0 translate-y-5"
+                x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition duration-700 ease-in"
+                x-transition:leave-start="opacity-100 translate-y-0"
+                x-transition:leave-end="opacity-0 -translate-y-5"
+                class="absolute inset-0 flex items-center justify-end text-emerald-600"
+                x-text="word"
+            ></span>
 
-{{-- SECTION --}}
-<section class="relative bg-[#efeeec]
-                left-1/2 right-1/2 w-screen
-                -translate-x-1/2
-                py-24 overflow-hidden">
-
-    {{-- BACKGROUND --}}
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-
-        <div class="absolute -top-32 -left-32
-                    w-[450px] h-[450px]
-                    bg-sky-200/40 rounded-full blur-3xl">
-        </div>
-
-        <div class="absolute bottom-0 right-0
-                    w-[400px] h-[400px]
-                    bg-emerald-200/40 rounded-full blur-3xl">
-        </div>
+        </template>
 
     </div>
 
-    {{-- CONTAINER --}}
-    <div class="relative z-10 max-w-[1280px] mx-auto px-4 lg:px-8">
+    <span class="text-slate-900">
+        Kesehatan
+    </span>
 
-        {{-- HEADER --}}
-        <div class="flex flex-col md:flex-row
-                    md:items-end md:justify-between
-                    gap-6 mb-12">
-
-            <div>
-
-                <span class="inline-flex items-center gap-2
-                             px-4 py-2 rounded-full
-                             bg-white border border-slate-200
-                             text-sky-700 text-sm font-medium
-                             shadow-sm mb-5">
-
-                    <div class="w-2 h-2 rounded-full bg-sky-500"></div>
-
-                    Update Informasi Kesehatan
-
-                </span>
-
-                <h2 class="text-4xl lg:text-5xl
-                           font-bold text-slate-900
-                           leading-tight">
-
-                    Konten
-                    <span class="text-sky-600">
-                        Terbaru
-                    </span>
+</div>
 
                 </h2>
 
-                <p class="text-slate-500 mt-5
-                          text-lg leading-relaxed
-                          max-w-2xl">
-
-                    Temukan informasi, artikel, video,
-                    dan poster kesehatan terbaru.
-
+                <p
+                    class="mt-5 text-slate-600
+                        leading-relaxed text-lg"
+                >
+                    Informasi kesehatan terbaru yang disajikan secara sederhana,
+                    terpercaya, dan mudah dipahami oleh masyarakat.
                 </p>
 
             </div>
 
-        </div>
-
-        {{-- TOP GRID --}}
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-7 items-stretch">
+        {{-- FEATURED AREA --}}
+        <div class="grid lg:grid-cols-12 gap-8 mb-10">
 
             {{-- FEATURED ARTICLE --}}
             @if($featuredArticle)
 
-                <a href="{{ route('articles.show', $featuredArticle->slug) }}"
-                   class="lg:col-span-2
-                          h-[620px]
-                          bg-white/80 backdrop-blur-xl
-                          rounded-[32px]
-                          overflow-hidden
-                          border border-white/70
-                          shadow-[0_10px_40px_rgba(15,23,42,0.08)]
-                          hover:shadow-[0_20px_60px_rgba(15,23,42,0.12)]
-                          hover:-translate-y-1
-                          transition-all duration-500
-                          group flex flex-col">
+                <a
+                    href="{{ route('articles.show', $featuredArticle->slug) }}"
+                    class="lg:col-span-8
+                           bg-white
+                           rounded-[32px]
+                           overflow-hidden
+                           border border-slate-200
+                           shadow-sm
+                           hover:shadow-2xl
+                           hover:border-emerald-200
+                           transition-all duration-500
+                           group"
+                >
 
-                    {{-- IMAGE --}}
-                    <div class="relative overflow-hidden h-[340px] flex-shrink-0">
-                        <div class="absolute top-5 left-5 right-5 z-20 flex items-center justify-between">
+                    <div class="relative h-[500px] overflow-hidden">
 
-                            {{-- CATEGORY --}}
-                            @if($featuredArticle->category)
-                                <span class="inline-flex items-center gap-2
-                                            px-4 py-2 rounded-full
-                                            bg-white/90 backdrop-blur-md
-                                            text-slate-800 text-xs font-semibold
-                                            shadow-lg">
-
-                                    <div class="w-2 h-2 rounded-full"
-                                        style="background: {{ $featuredArticle->category->color ?? '#0ea5e9' }}">
-                                    </div>
-
-                                    {{ $featuredArticle->category->name }}
-                                </span>
-                            @else
-                                <span></span>
-                            @endif
-
-                            {{-- TYPE --}}
-                            <span class="px-4 py-2 rounded-full
-                                        bg-sky-600 text-white
-                                        text-xs font-bold shadow-lg">
-
-                                Artikel
-
-                            </span>
-
-                        </div>
                         <img
                             src="{{ $featuredArticle->thumbnail
-                                    ? asset('storage/' . $featuredArticle->thumbnail)
-                                    : asset('images/default.jpg') }}"
+                                ? asset('storage/' . $featuredArticle->thumbnail)
+                                : asset('images/default.jpg') }}"
                             alt="{{ $featuredArticle->title }}"
                             class="w-full h-full object-cover
                                    group-hover:scale-105
                                    transition duration-700"
                         >
 
-                        <div class="absolute inset-0
-                                    bg-gradient-to-t
-                                    from-black/50
-                                    via-black/10
-                                    to-transparent">
+                        <div
+                            class="absolute inset-0
+                                   bg-gradient-to-t
+                                   from-black/60
+                                   via-black/10
+                                   to-transparent"
+                        ></div>
+
+                        <div
+                            class="absolute top-6 left-6
+                                   flex gap-3"
+                        >
+
+                            <span
+                                class="px-4 py-2 rounded-full
+                                       bg-white/90 backdrop-blur
+                                       text-slate-800 text-xs font-semibold"
+                            >
+                                {{ optional($featuredArticle->category)->name ?? 'Kesehatan' }}
+                            </span>
+
+                            <span
+                                class="px-4 py-2 rounded-full
+                                       bg-emerald-600
+                                       text-white text-xs font-semibold"
+                            >
+                                Artikel
+                            </span>
+
                         </div>
 
-                    </div>
+                        <div
+                            class="absolute bottom-8 left-8 right-8 text-white"
+                        >
 
-                    {{-- CONTENT --}}
-                    <div class="p-8 flex-1 flex flex-col justify-between">
-
-                        <div>
-
-                            <h3 class="text-3xl font-bold
-                                       text-slate-900
-                                       leading-snug mb-5
-                                       line-clamp-2">
-
-                                {{ $featuredArticle->title }}
-
-                            </h3>
-
-                            <p class="text-slate-600
-                                      leading-relaxed text-lg
-                                      line-clamp-4">
-
-                                {{ \Illuminate\Support\Str::limit(strip_tags($featuredArticle->content), 180) }}
-
+                            <p class="text-sm text-white/80 mb-3">
+                                {{ $featuredArticle->created_at->format('d M Y') }}
                             </p>
 
-                        </div>
+                            <h3
+                                class="text-3xl lg:text-4xl
+                                       font-bold leading-tight
+                                       line-clamp-2"
+                            >
+                                {{ $featuredArticle->title }}
+                            </h3>
 
-                        <div class="flex items-center gap-4
-                                    mt-8 text-sm text-slate-400">
-
-                            <span>
-                                {{ $featuredArticle->created_at->diffForHumans() }}
-                            </span>
-
-                            <span>•</span>
-
-                            <span>
-                                {{ $featuredArticle->created_at->format('d M Y') }}
-                            </span>
+                            <p
+                                class="mt-4 text-white/90
+                                       max-w-2xl line-clamp-2"
+                            >
+                                {{ \Illuminate\Support\Str::limit(strip_tags($featuredArticle->content), 140) }}
+                            </p>
 
                         </div>
 
@@ -248,212 +202,218 @@
 
             @endif
 
-
-            {{-- FEATURED POSTER SLIDER --}}
-            @if($featuredPosters->count())
-
-            <div 
-                x-data="{
-                    active: 0,
-                    total: {{ $featuredPosters->count() }},
-                    autoplay() {
-                        setInterval(() => {
-                            this.active = (this.active + 1) % this.total
-                        }, 4000)
-                    }
-                }"
-                x-init="autoplay()"
-                class="relative h-[620px] rounded-[32px] overflow-hidden shadow-[0_10px_40px_rgba(15,23,42,0.08)]"
+            {{-- FEATURED POSTER --}}
+            <div
+                class="lg:col-span-4
+                       rounded-[32px]
+                       overflow-hidden
+                       border border-slate-200
+                       shadow-sm
+                       hover:shadow-2xl
+                       hover:border-emerald-200
+                       transition-all duration-500"
             >
 
-                {{-- SLIDES --}}
-                <template x-for="(poster, index) in {{ $featuredPosters->values() }}" :key="index">
+                @if($featuredPosters->count())
 
-                    <div
-                        x-show="active === index"
-                        x-transition:enter="transition ease-out duration-700"
-                        x-transition:enter-start="opacity-0 scale-105"
-                        x-transition:enter-end="opacity-100 scale-100"
-                        class="absolute inset-0"
+                    @php
+                        $poster = $featuredPosters->first();
+                    @endphp
+
+                    <a
+                        href="{{ route('posters.show', $poster->slug) }}"
+                        class="relative block h-full"
                     >
 
                         <img
-                            :src="'/storage/' + poster.poster_file"
-                            class="w-full h-full object-cover"
+                            src="{{ asset('storage/' . $poster->poster_file) }}"
+                            alt="{{ $poster->title }}"
+                            class="w-full h-[500px] object-cover
+                                   hover:scale-105
+                                   transition duration-700"
                         >
 
-                        {{-- OVERLAY --}}
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                        <div
+                            class="absolute inset-0
+                                   bg-gradient-to-t
+                                   from-black/70
+                                   via-black/20
+                                   to-transparent"
+                        ></div>
 
-                        {{-- CONTENT --}}
-                        <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
+                        <div
+                            class="absolute top-6 left-6"
+                        >
 
-                            <h3 class="text-2xl font-bold">
-                                <span x-text="poster.title"></span>
-                            </h3>
-
-                            <p class="text-white/70 mt-2 text-sm"
-                            x-text="new Date(poster.created_at).toLocaleDateString()">
-                            </p>
+                            <span
+                                class="px-4 py-2 rounded-full
+                                       bg-white/90 backdrop-blur
+                                       text-slate-800 text-xs font-semibold"
+                            >
+                                Poster Terbaru
+                            </span>
 
                         </div>
 
-                    </div>
+                        <div
+                            class="absolute bottom-6 left-6 right-6 text-white"
+                        >
 
-                </template>
+                            <h3
+                                class="text-2xl font-bold
+                                       line-clamp-2"
+                            >
+                                {{ $poster->title }}
+                            </h3>
 
-                {{-- DOT NAV --}}
-                <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
-                    <template x-for="(poster, index) in {{ $featuredPosters->values() }}">
-                        <button
-                            @click="active = index"
-                            class="w-2.5 h-2.5 rounded-full transition-all"
-                            :class="active === index ? 'bg-white w-6' : 'bg-white/50'"
-                        ></button>
-                    </template>
-                </div>
+                            <div class="mt-4">
 
-            </div>
-
-            @endif
-
-        </div>
-
-        {{-- BOTTOM GRID --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-7 mt-7">
-
-            @foreach($latestPosts as $post)
-
-                <a href="{{ $post->content_type === 'video'
-                            ? route('videos.show', $post->slug)
-                            : route('articles.show', $post->slug) }}"
-                class="group relative
-                        bg-white/80 backdrop-blur-xl
-                        rounded-[28px]
-                        overflow-hidden
-                        border border-white/60
-                        shadow-[0_10px_30px_rgba(15,23,42,0.06)]
-                        hover:shadow-[0_20px_50px_rgba(15,23,42,0.12)]
-                        hover:-translate-y-1
-                        transition-all duration-500">
-
-                    {{-- IMAGE --}}
-                    <div class="relative overflow-hidden">
-
-                        @if($post->content_type === 'video')
-
-                         {{-- THUMBNAIL YOUTUBE --}}
-                        <div class="relative">
-
-                            <img
-                                src="https://img.youtube.com/vi/{{ $post->youtube_id }}/hqdefault.jpg"
-                                class="w-full h-[230px] object-cover"
-                            />
-
-                            {{-- PLAY BUTTON OVERLAY --}}
-                            <div class="absolute inset-0 flex items-center justify-center">
-
-                                <div class="w-16 h-16 rounded-full
-                                            bg-white/90 backdrop-blur-md
-                                            flex items-center justify-center
-                                            shadow-lg
-                                            group-hover:scale-110
-                                            transition duration-300">
-
-                                    <svg class="w-8 h-8 text-red-600 ml-1"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24">
-
-                                        <path d="M8 5v14l11-7z"/>
-                                    </svg>
-
-                                </div>
+                                <span
+                                    class="inline-flex items-center gap-2
+                                           px-4 py-2 rounded-full
+                                           bg-white/15 backdrop-blur
+                                           text-white text-sm"
+                                >
+                                    Lihat Poster →
+                                </span>
 
                             </div>
 
                         </div>
 
-                        @else
+                    </a>
 
-                            {{-- IMAGE ARTICLE --}}
+                @endif
+
+            </div>
+
+        </div>
+
+        {{-- LATEST CONTENT --}}
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+
+            @foreach($latestPosts as $post)
+
+                <a
+                    href="{{ $post->content_type === 'video'
+                        ? route('videos.show', $post->slug)
+                        : route('articles.show', $post->slug) }}"
+                    class="group bg-white
+                           rounded-[28px]
+                           overflow-hidden
+                           border border-slate-200
+                           shadow-sm
+                           hover:shadow-2xl
+                           hover:-translate-y-2
+                           hover:border-emerald-200
+                           transition-all duration-500"
+                >
+
+                    {{-- IMAGE --}}
+                    <div class="h-56 overflow-hidden">
+
+                     @if($post->content_type === 'video')
+
+    <div class="relative w-full h-full">
+
+        <img
+            src="https://img.youtube.com/vi/{{ $post->youtube_id }}/hqdefault.jpg"
+            class="w-full h-full object-cover
+                   group-hover:scale-105
+                   transition duration-700"
+        >
+
+        {{-- OVERLAY --}}
+        <div class="absolute inset-0 bg-black/20"></div>
+
+        {{-- PLAY BUTTON --}}
+        <div
+            class="absolute inset-0
+                   flex items-center justify-center"
+        >
+
+            <div
+                class="w-16 h-16 rounded-full
+                       bg-red-600/95
+                       shadow-2xl
+                       flex items-center justify-center
+                       group-hover:scale-110
+                       transition duration-300"
+            >
+
+                <svg
+                    class="w-8 h-8 text-white ml-1"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path d="M8 5v14l11-7z"/>
+
+                </svg>
+
+            </div>
+
+        </div>
+
+        {{-- LABEL VIDEO --}}
+        <div class="absolute top-4 left-4">
+
+        </div>
+
+    </div>
+
+@else
+
                             <img
                                 src="{{ $post->thumbnail
-                                        ? asset('storage/' . $post->thumbnail)
-                                        : asset('images/default.jpg') }}"
-                                alt="{{ $post->title }}"
-                                class="w-full h-[230px] object-cover
-                                    group-hover:scale-105
-                                    transition duration-700"
+                                    ? asset('storage/' . $post->thumbnail)
+                                    : asset('images/default.jpg') }}"
+                                class="w-full h-full object-cover
+                                       group-hover:scale-105
+                                       transition duration-700"
                             >
 
                         @endif
-
-                        {{-- OVERLAY --}}
-                        <div class="absolute inset-0
-                                    bg-gradient-to-t
-                                    from-black/40
-                                    via-black/5
-                                    to-transparent">
-                        </div>
-
-                        {{-- TOP BADGES --}}
-                        <div class="absolute top-4 left-4 right-4
-                                    flex items-center justify-between z-20">
-
-                            {{-- CATEGORY --}}
-                            <span
-                                class="inline-flex items-center gap-2
-                                    px-3 py-1.5 rounded-full
-                                    bg-white/90 backdrop-blur-md
-                                    text-slate-800 text-xs font-semibold
-                                    shadow-lg"
-                            >
-
-                                <div class="w-2 h-2 rounded-full"
-                                    style="background: {{ $post->category->color ?? '#0ea5e9' }}">
-                                </div>
-
-                                {{ $post->category->name ?? 'Kategori' }}
-
-                            </span>
-
-                            {{-- TYPE --}}
-                            @if($post->content_type === 'video')
-
-                                <span
-                                    class="px-3 py-1.5 rounded-full
-                                        bg-red-600 text-white
-                                        text-xs font-bold shadow-lg">
-
-                                    Video
-
-                                </span>
-
-                            @else
-
-                                <span
-                                    class="px-3 py-1.5 rounded-full
-                                        bg-sky-600 text-white
-                                        text-xs font-bold shadow-lg">
-
-                                    Artikel
-
-                                </span>
-
-                            @endif
-
-                        </div>
 
                     </div>
 
                     {{-- CONTENT --}}
                     <div class="p-6">
 
-                        {{-- DATE --}}
-                        <div class="flex items-center gap-2
-                                    text-sm text-slate-400 mb-4">
+                        <span
+                            class="inline-flex px-3 py-1 rounded-full
+                                   bg-emerald-50
+                                   border border-emerald-100
+                                   text-emerald-700
+                                   text-xs font-medium"
+                        >
+                            {{ $post->content_type === 'video'
+                                ? 'Video'
+                                : 'Artikel' }}
+                        </span>
 
-                            <i class="ti ti-calendar text-base"></i>
+                        <h3
+                            class="mt-4 text-xl font-bold
+                                   text-slate-900
+                                   line-clamp-2
+                                   group-hover:text-emerald-600
+                                   transition"
+                        >
+                            {{ $post->title }}
+                        </h3>
+
+                        <p
+                            class="mt-3 text-slate-600
+                                   text-sm leading-relaxed
+                                   line-clamp-3"
+                        >
+                            {{ \Illuminate\Support\Str::limit(strip_tags($post->content ?? ''), 120) }}
+                        </p>
+
+                        <div
+                            class="mt-5 flex items-center gap-2
+                                   text-sm text-slate-500"
+                        >
 
                             <span>
                                 {{ $post->created_at->format('d M Y') }}
@@ -461,32 +421,46 @@
 
                         </div>
 
-                        {{-- TITLE --}}
-                        <h3 class="text-xl font-bold
-                                text-slate-900
-                                leading-snug
-                                line-clamp-2
-                                group-hover:text-sky-600
-                                transition">
-
-                            {{ \Illuminate\Support\Str::limit($post->title, 60) }}
-
-                        </h3>
-
-                        {{-- DESCRIPTION --}}
-                        <p class="text-slate-500
-                                text-sm leading-relaxed
-                                mt-4 line-clamp-3">
-
-                            {{ \Illuminate\Support\Str::limit(strip_tags($post->content ?? ''), 90) }}
-
-                        </p>
-
                     </div>
 
                 </a>
 
             @endforeach
+
+        </div>
+
+        {{-- BUTTON --}}
+        <div class="mt-16 text-center">
+
+            <a
+                href="{{ route('articles.index') }}"
+                class="inline-flex items-center gap-3
+                       px-8 py-4 rounded-full
+                       bg-emerald-600
+                       text-white font-semibold
+                       hover:bg-emerald-700
+                       transition"
+            >
+
+                Lihat Semua Konten
+
+                <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                    />
+
+                </svg>
+
+            </a>
 
         </div>
 

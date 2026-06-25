@@ -257,6 +257,21 @@
                                 {{ Str::limit(strip_tags($poster->description), 120) }}
 
                             </p>
+                            {{-- ACTION --}}
+                            <div class="mt-4">
+
+                                <a
+                                    href="{{ route('posters.show', $poster->slug) }}"
+                                    class="inline-flex items-center gap-2
+                                        bg-orange-500 hover:bg-orange-600
+                                        text-white text-sm font-semibold
+                                        px-4 py-2 rounded-xl transition"
+                                >
+                                    Detail Poster
+                                    →
+                                </a>
+
+                            </div>
 
                         </div>
 

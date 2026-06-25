@@ -59,4 +59,9 @@ public function users()
     {
         return $this->hasMany(User::class);
     }
+
+    public function notes()
+{
+    return $this->hasMany(Note::class);
+}
 }

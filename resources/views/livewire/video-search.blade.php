@@ -218,15 +218,45 @@
 
 
 
-                        {{-- DESCRIPTION --}}
-                        <p
-                            class="text-slate-500 text-sm
-                                   leading-relaxed line-clamp-3"
-                        >
+                       {{-- DESCRIPTION --}}
+<p
+    class="text-slate-500 text-sm
+           leading-relaxed line-clamp-3 mb-5"
+>
+    {{ Str::limit(strip_tags($video->description), 120) }}
+</p>
 
-                            {{ Str::limit(strip_tags($video->content), 120) }}
+{{-- ACTION --}}
+<div class="flex items-center justify-between">
 
-                        </p>
+    <a
+        href="{{ route('videos.show', $video->slug) }}"
+        class="inline-flex items-center gap-2
+               px-4 py-2 rounded-xl
+               bg-red-500 text-white
+               hover:bg-red-600
+               transition text-sm font-semibold"
+    >
+        Lihat Detail
+
+        <svg class="w-4 h-4"
+             fill="none"
+             stroke="currentColor"
+             viewBox="0 0 24 24">
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+            />
+        </svg>
+    </a>
+
+    <span class="text-xs text-slate-400">
+        👁 {{ number_format($video->views ?? 0) }}
+    </span>
+
+</div>
 
                     </div>
 

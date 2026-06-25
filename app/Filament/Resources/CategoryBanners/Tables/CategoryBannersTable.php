@@ -17,7 +17,10 @@ class CategoryBannersTable
         return $table
             ->columns([
 
-                ImageColumn::make('image'),
+                  ImageColumn::make('image')
+                    ->disk('public')
+                    ->square()
+                    ->size(70),
 
                 TextColumn::make('category.name')
                     ->label('Kategori'),

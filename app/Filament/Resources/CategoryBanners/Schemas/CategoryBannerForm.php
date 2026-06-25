@@ -30,7 +30,11 @@ class CategoryBannerForm
 
             FileUpload::make('image')
                 ->image()
+                ->imageEditor()
+                ->disk('public')
                 ->directory('category-banners')
+                ->visibility('public')
+                ->maxSize(5120)
                 ->required(),
 
             Toggle::make('is_active')
