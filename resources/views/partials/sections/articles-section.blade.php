@@ -25,7 +25,7 @@
 <section class="relative w-screen
            left-1/2 -translate-x-1/2
            bg-white
-           py-24
+           py-16 lg:py-24
            overflow-hidden">
 
     <div class="max-w-7xl mx-auto px-4 lg:px-8">
@@ -41,7 +41,7 @@
                         }, 2500)
                     }
                 }"
-                class="max-w-2xl mx-auto text-center mb-20"
+                class="max-w-2xl mx-auto text-center mb-12 lg:mb-20"
             >
 
                 <span
@@ -49,58 +49,71 @@
                         px-4 py-2 rounded-full
                         bg-emerald-50
                         border border-emerald-100
-                        text-emerald-700 text-sm font-medium"
+                        text-emerald-700 text-xs sm:text-sm font-medium"
                 >
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                     Konten Terbaru
                 </span>
 
-                <h2 class="mt-6 text-4xl lg:text-5xl font-bold text-center">
-
+               <h2 class="mt-4
+                            text-3xl
+                            sm:text-4xl
+                            lg:text-5xl
+                            font-bold
+                            text-center">
                     <div
-    x-data="{
-        words:['Artikel','Video','Poster'],
-        current:0,
-        init(){
-            setInterval(()=>{
-                this.current=(this.current+1)%this.words.length
-            },2500)
-        }
-    }"
-    class="flex justify-center items-center gap-2"
->
+                        x-data="{
+                            words:['Artikel','Video','Poster'],
+                            current:0,
+                            init(){
+                                setInterval(()=>{
+                                    this.current=(this.current+1)%this.words.length
+                                },2500)
+                            }
+                        }"
+                        class="flex justify-center items-center gap-1 sm:gap-2"
+                    >
 
-    <div class="relative w-[140px] h-[70px]">
+                        <div class="relative
+                                    w-[100px]
+                                    sm:w-[120px]
+                                    lg:w-[140px]
+                                    h-[50px]
+                                    sm:h-[60px]
+                                    lg:h-[70px]">
 
-        <template x-for="(word,index) in words" :key="index">
+                            <template x-for="(word,index) in words" :key="index">
 
-            <span
-                x-show="current===index"
-                x-transition:enter="transition duration-700 ease-out"
-                x-transition:enter-start="opacity-0 translate-y-5"
-                x-transition:enter-end="opacity-100 translate-y-0"
-                x-transition:leave="transition duration-700 ease-in"
-                x-transition:leave-start="opacity-100 translate-y-0"
-                x-transition:leave-end="opacity-0 -translate-y-5"
-                class="absolute inset-0 flex items-center justify-end text-emerald-600"
-                x-text="word"
-            ></span>
+                                <span
+                                    x-show="current===index"
+                                    x-transition:enter="transition duration-700 ease-out"
+                                    x-transition:enter-start="opacity-0 translate-y-5"
+                                    x-transition:enter-end="opacity-100 translate-y-0"
+                                    x-transition:leave="transition duration-700 ease-in"
+                                    x-transition:leave-start="opacity-100 translate-y-0"
+                                    x-transition:leave-end="opacity-0 -translate-y-5"
+                                    class="absolute inset-0 flex items-center justify-end text-emerald-600"
+                                    x-text="word"
+                                ></span>
 
-        </template>
+                            </template>
 
-    </div>
+                        </div>
 
-    <span class="text-slate-900">
-        Kesehatan
-    </span>
+                        <span class="text-slate-900">
+                            Kesehatan
+                        </span>
 
-</div>
+                    </div>
 
                 </h2>
 
                 <p
-                    class="mt-5 text-slate-600
-                        leading-relaxed text-lg"
+                    class="mt-4
+                        text-slate-600
+                        leading-relaxed
+                        text-base
+                        lg:text-lg
+                        px-2"
                 >
                     Informasi kesehatan terbaru yang disajikan secara sederhana,
                     terpercaya, dan mudah dipahami oleh masyarakat.
@@ -109,7 +122,7 @@
             </div>
 
         {{-- FEATURED AREA --}}
-        <div class="grid lg:grid-cols-12 gap-8 mb-10">
+     <div class="grid lg:grid-cols-12 gap-5 lg:gap-8 mb-10">
 
             {{-- FEATURED ARTICLE --}}
             @if($featuredArticle)
@@ -148,10 +161,11 @@
                                    to-transparent"
                         ></div>
 
-                        <div
-                            class="absolute top-6 left-6
-                                   flex gap-3"
-                        >
+                       <div class="absolute
+                                top-4 left-4
+                                lg:top-6 lg:left-6
+                                flex flex-wrap gap-2">
+                        
 
                             <span
                                 class="px-4 py-2 rounded-full
@@ -172,7 +186,7 @@
                         </div>
 
                         <div
-                            class="absolute bottom-8 left-8 right-8 text-white"
+                            class="absolute bottom-5 left-5 right-5 lg:bottom-8 lg:left-8 lg:right-8 text-white"
                         >
 
                             <p class="text-sm text-white/80 mb-3">
@@ -180,7 +194,7 @@
                             </p>
 
                             <h3
-                                class="text-3xl lg:text-4xl
+                                class="text-xl sm:text-2xl lg:text-4xl
                                        font-bold leading-tight
                                        line-clamp-2"
                             >
@@ -228,8 +242,7 @@
                         <img
                             src="{{ asset('storage/' . $poster->poster_file) }}"
                             alt="{{ $poster->title }}"
-                            class="w-full h-[500px] object-cover
-                                   hover:scale-105
+                            class="w-full h-[320px] sm:h-[420px] lg:h-[500px] object-cover hover:scale-105
                                    transition duration-700"
                         >
 
@@ -290,79 +303,98 @@
         </div>
 
         {{-- LATEST CONTENT --}}
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+       <div
+            x-data="autoSlider()"
+            x-init="start()"
+            x-ref="slider"
+            class="
+                flex
+                md:grid md:grid-cols-2
+                lg:grid-cols-3
 
+                gap-5 lg:gap-7
+
+                overflow-x-auto
+                md:overflow-visible
+
+                snap-x snap-mandatory
+                scrollbar-hide
+
+                scroll-smooth
+                pb-2
+            "
+        >
             @foreach($latestPosts as $post)
 
                 <a
                     href="{{ $post->content_type === 'video'
                         ? route('videos.show', $post->slug)
                         : route('articles.show', $post->slug) }}"
-                    class="group bg-white
-                           rounded-[28px]
-                           overflow-hidden
-                           border border-slate-200
-                           shadow-sm
-                           hover:shadow-2xl
-                           hover:-translate-y-2
-                           hover:border-emerald-200
-                           transition-all duration-500"
+                    class="group min-w-[85%] sm:min-w-[70%] md:min-w-0 snap-center bg-white
+                        rounded-[28px]
+                        overflow-hidden
+                        border border-slate-200
+                        shadow-sm
+                        hover:shadow-xl
+                        hover:-translate-y-2
+                        hover:border-emerald-200
+                        transition-all duration-500"
                 >
 
                     {{-- IMAGE --}}
-                    <div class="h-56 overflow-hidden">
+                    <div class="h-48 sm:h-56 overflow-hidden">
 
                      @if($post->content_type === 'video')
 
-    <div class="relative w-full h-full">
+                            <div class="relative w-full h-full">
 
-        <img
-            src="https://img.youtube.com/vi/{{ $post->youtube_id }}/hqdefault.jpg"
-            class="w-full h-full object-cover
-                   group-hover:scale-105
-                   transition duration-700"
-        >
+                                <img
+                                    src="https://img.youtube.com/vi/{{ $post->youtube_id }}/hqdefault.jpg"
+                                    class="w-full h-full object-cover
+                                        group-hover:scale-105
+                                        transition duration-700"
+                                >
 
-        {{-- OVERLAY --}}
-        <div class="absolute inset-0 bg-black/20"></div>
+                                {{-- OVERLAY --}}
+                                <div class="absolute inset-0 bg-black/20"></div>
 
-        {{-- PLAY BUTTON --}}
-        <div
-            class="absolute inset-0
-                   flex items-center justify-center"
-        >
+                                {{-- PLAY BUTTON --}}
+                                <div
+                                    class="absolute inset-0
+                                        flex items-center justify-center"
+                                >
 
-            <div
-                class="w-16 h-16 rounded-full
-                       bg-red-600/95
-                       shadow-2xl
-                       flex items-center justify-center
-                       group-hover:scale-110
-                       transition duration-300"
-            >
+                                    <div
+                                        class="w-16 h-16 rounded-full
+                                            bg-red-600/95
+                                            shadow-2xl
+                                            flex items-center justify-center
+                                            group-hover:scale-110
+                                            transition duration-300"
+                                    >
 
-                <svg
-                    class="w-8 h-8 text-white ml-1"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                >
+                                        <svg
+                                            class="w-8 h-8 text-white ml-1"
+                                            fill="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
 
-                    <path d="M8 5v14l11-7z"/>
+                                            <path d="M8 5v14l11-7z"/>
 
-                </svg>
+                                        </svg>
 
-            </div>
+                                    </div>
 
-        </div>
+                                </div>
 
-        {{-- LABEL VIDEO --}}
-        <div class="absolute top-4 left-4">
+                                {{-- LABEL VIDEO --}}
+                                <div class="absolute top-4 left-4">
 
-        </div>
+                                </div>
 
-    </div>
+                            </div>
 
-@else
+                        @else
 
                             <img
                                 src="{{ $post->thumbnail
@@ -378,7 +410,7 @@
                     </div>
 
                     {{-- CONTENT --}}
-                    <div class="p-6">
+                    <div class="p-5 lg:p-6">
 
                         <span
                             class="inline-flex px-3 py-1 rounded-full
@@ -392,13 +424,14 @@
                                 : 'Artikel' }}
                         </span>
 
-                        <h3
-                            class="mt-4 text-xl font-bold
-                                   text-slate-900
-                                   line-clamp-2
-                                   group-hover:text-emerald-600
-                                   transition"
-                        >
+                        <h3 class="mt-4
+                                text-lg lg:text-xl
+                                font-bold
+                                text-slate-900
+                                line-clamp-2
+                                group-hover:text-emerald-600
+                                transition"
+                            >
                             {{ $post->title }}
                         </h3>
 
@@ -430,7 +463,7 @@
         </div>
 
         {{-- BUTTON --}}
-        <div class="mt-16 text-center">
+        <div class="mt-12 text-center">
 
             <a
                 href="{{ route('articles.index') }}"
@@ -467,3 +500,50 @@
     </div>
 
 </section>
+
+<script>
+document.addEventListener('alpine:init', () => {
+
+    Alpine.data('autoSlider', () => ({
+        interval: null,
+
+        start() {
+
+            if (window.innerWidth >= 768) return;
+
+            this.interval = setInterval(() => {
+
+                const slider = this.$refs.slider;
+
+                const card = slider.querySelector('a');
+
+                if (!card) return;
+
+                const scrollAmount = card.offsetWidth + 20;
+
+                const maxScroll =
+                    slider.scrollWidth - slider.clientWidth;
+
+                if (slider.scrollLeft >= maxScroll - 10) {
+
+                    slider.scrollTo({
+                        left: 0,
+                        behavior: 'smooth'
+                    });
+
+                } else {
+
+                    slider.scrollBy({
+                        left: scrollAmount,
+                        behavior: 'smooth'
+                    });
+
+                }
+
+            }, 3500);
+        }
+    }));
+
+});
+
+</script>

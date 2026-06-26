@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\View;
 use App\Models\Post;
 use App\Observers\CategoryObserver;
+use Illuminate\Support\Facades\Schema;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Schema::defaultStringLength(191);
         Category::observe(CategoryObserver::class);
         View::composer('layouts.public', function ($view) {
         $view->with('navCategories', Category::orderBy('name')->get());
