@@ -14,13 +14,13 @@ class CategoryObserver
             preg_replace('/[^a-zA-Z0-9]/', '', $category->name)
         );
 
-        $email = $baseEmail . '@puskesmas.id';
+        $email = $baseEmail . '@gmail.com';
 
         $counter = 1;
 
         while (User::where('email', $email)->exists()) {
 
-            $email = $baseEmail . $counter . '@puskesmas.id';
+            $email = $baseEmail . $counter . '@gmail.com';
 
             $counter++;
         }

@@ -11,18 +11,18 @@ class UsersSeeder extends Seeder
     {
         // Super Admin
         $admin = User::firstOrCreate(
-            ['email' => 'admin@puskesmas.id'],
+            ['email' => 'admin@gmail.com.id'],
             ['name' => 'Super Admin', 'password' => Hash::make('password')]
         );
         $admin->assignRole('super_admin');
 
         // 5 Kontributor
         $contributors = [
-            ['name' => 'Tim Gizi',      'email' => 'gizi@puskesmas.id'],
-            ['name' => 'Tim PHBS',      'email' => 'phbs@puskesmas.id'],
-            ['name' => 'Tim KB',        'email' => 'kb@puskesmas.id'],
-            ['name' => 'Tim Lansia',    'email' => 'lansia@puskesmas.id'],
-            ['name' => 'Tim Kes. Jiwa', 'email' => 'jiwa@puskesmas.id'],
+            ['name' => 'Tim Gizi',      'email' => 'gizi@gmail.com.id'],
+            ['name' => 'Tim PHBS',      'email' => 'phbs@gmail.com.id'],
+            ['name' => 'Tim KB',        'email' => 'kb@gmail.com.id'],
+            ['name' => 'Tim Lansia',    'email' => 'lansia@gmail.com.id'],
+            ['name' => 'Tim Kes. Jiwa', 'email' => 'jiwa@gmail.com.id'],
         ];
 
         foreach ($contributors as $data) {
