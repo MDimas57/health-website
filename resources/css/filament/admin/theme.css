@@ -1,0 +1,19 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+@source '../../../../resources/views/**/*.blade.php';
+
+/* Custom CSS */
+
+.fi-sidebar {
+    @apply bg-slate-900;
+}
+
+.fi-topbar {
+    @apply bg-white;
+}
+
+.fi-main {
+    @apply bg-slate-50;
+}

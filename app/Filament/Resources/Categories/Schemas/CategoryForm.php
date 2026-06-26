@@ -6,6 +6,11 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Set;
+use Illuminate\Support\Str;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ColorPicker;
 
 class CategoryForm
 {
@@ -14,13 +19,15 @@ class CategoryForm
         return $schema
             ->components([
 
-                TextInput::make('name')
+             TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (Set $set, ?string $state) {$set('slug', Str::slug($state ?? ''));
+                    }),
 
                 TextInput::make('slug')
                     ->required()
-                    ->maxLength(255),
+                    ->unique(ignoreRecord: true),
 
 
                 FileUpload::make('image')
@@ -39,7 +46,7 @@ class CategoryForm
                     ->uploadProgressIndicatorPosition('left'),
 
  
-                TextInput::make('color')
+               ColorPicker::make('color')
                     ->required()
                     ->default('#3B82F6'),
 

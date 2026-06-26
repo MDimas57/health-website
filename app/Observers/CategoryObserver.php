@@ -3,35 +3,34 @@
 namespace App\Observers;
 
 use App\Models\Category;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class CategoryObserver
 {
+    /**
+     * Handle the Category "created" event.
+     */
     public function created(Category $category): void
     {
-        $baseEmail = strtolower(
-            preg_replace('/[^a-zA-Z0-9]/', '', $category->name)
-        );
+        // Tidak melakukan apa pun.
+    }
 
-        $email = $baseEmail . '@gmail.com';
+    public function updated(Category $category): void
+    {
+        //
+    }
 
-        $counter = 1;
+    public function deleted(Category $category): void
+    {
+        //
+    }
 
-        while (User::where('email', $email)->exists()) {
+    public function restored(Category $category): void
+    {
+        //
+    }
 
-            $email = $baseEmail . $counter . '@gmail.com';
-
-            $counter++;
-        }
-
-        $user = User::create([
-            'name' => 'Tim ' . $category->name,
-            'email' => $email,
-            'password' => Hash::make('password'),
-            'category_id' => $category->id,
-        ]);
-
-        $user->assignRole('contributor');
+    public function forceDeleted(Category $category): void
+    {
+        //
     }
 }
