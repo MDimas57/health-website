@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notes', function (Blueprint $table) {
+
             $table->id();
 
             $table->foreignId('user_id')
@@ -22,7 +23,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->string('title');
+            $table->string('title', 191);
 
             $table->longText('content');
 
@@ -30,6 +31,7 @@ return new class extends Migration
                 ->default(true);
 
             $table->timestamps();
+
         });
     }
 

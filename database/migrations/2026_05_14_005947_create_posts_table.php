@@ -13,18 +13,36 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->string('title');
-            $table->string('slug')->unique();
+
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('category_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->string('title', 191);
+
+            $table->string('slug', 191)->unique();
+
             $table->enum('type', ['article', 'poster', 'video']);
-            $table->longText('content')->nullable();       // untuk artikel
-            $table->string('thumbnail')->nullable();       // gambar thumbnail
-            $table->string('youtube_url')->nullable();     // untuk video
-            $table->string('poster_file')->nullable();     // untuk poster
-            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
+
+            $table->longText('content')->nullable();
+
+            $table->string('thumbnail', 191)->nullable();
+
+            $table->string('youtube_url', 191)->nullable();
+
+            $table->string('poster_file', 191)->nullable();
+
+            $table->enum('status', ['draft', 'published', 'archived'])
+                ->default('draft');
+
             $table->timestamp('published_at')->nullable();
-            $table->integer('views')->default(0);
+
+            $table->unsignedBigInteger('views')->default(0);
+
             $table->timestamps();
         });
     }

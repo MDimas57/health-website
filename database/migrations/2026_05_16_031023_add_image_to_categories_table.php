@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::table('categories', function (Blueprint $table) {
 
-            $table->string('image')->nullable()->after('slug');
+            $table->string('image', 191)
+                ->nullable()
+                ->after('slug');
 
         });
     }

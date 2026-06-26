@@ -20,10 +20,11 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->string('title');
+            $table->string('title', 191);
+
             $table->text('subtitle')->nullable();
 
-            $table->string('image');
+            $table->string('image', 191);
 
             $table->boolean('is_active')
                 ->default(true);

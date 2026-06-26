@@ -14,29 +14,29 @@ return new class extends Migration
 
             $table->foreignId('user_id')
                 ->constrained()
-                ->onDelete('cascade');
+                ->cascadeOnDelete();
 
             $table->foreignId('category_id')
                 ->constrained()
-                ->onDelete('cascade');
+                ->cascadeOnDelete();
 
-            $table->string('title');
+            $table->string('title', 191);
 
-            $table->string('slug')->unique();
+            $table->string('slug', 191)->unique();
 
             $table->longText('content');
 
-            $table->string('thumbnail')->nullable();
+            $table->string('thumbnail', 191)->nullable();
 
             $table->enum('status', [
                 'draft',
                 'published',
-                'archived'
+                'archived',
             ])->default('draft');
 
             $table->timestamp('published_at')->nullable();
 
-            $table->integer('views')->default(0);
+            $table->unsignedBigInteger('views')->default(0);
 
             $table->timestamps();
         });

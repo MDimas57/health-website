@@ -13,13 +13,18 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->string('color')->default('#3B82F6');
+
+            $table->string('name', 191);
+
+            $table->string('slug', 191)->unique();
+
+            $table->string('color', 20)->default('#3B82F6');
+
             $table->text('description')->nullable();
+
             $table->timestamps();
         });
-            }
+    }
 
     /**
      * Reverse the migrations.
