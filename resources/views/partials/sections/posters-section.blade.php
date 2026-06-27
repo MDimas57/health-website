@@ -56,32 +56,49 @@ style="isolation:isolate;"
 
     {{-- CONTENT --}}
     <div class="relative z-10 max-w-[1250px] mx-auto px-4 lg:px-8">
+{{-- HEADER --}}
+<div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 sm:mb-10 lg:mb-12">
 
-        {{-- HEADER --}}
-        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10 lg:mb-12">
+    <div class="w-full text-center lg:text-left">
 
-            <div>
-                <span
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full
-                           bg-white/5 border border-white/10
-                           text-emerald-300 text-xs lg:text-sm
-                           font-medium backdrop-blur-xl mb-4 lg:mb-5"
-                >
-                    <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
-                    Edukasi Visual Kesehatan
-                </span>
+        {{-- Badge --}}
+        <span
+            class="inline-flex items-center gap-2 px-3 sm:px-4 py-2
+                   rounded-full bg-white/5 border border-white/10
+                   text-emerald-300 text-xs sm:text-sm font-medium
+                   backdrop-blur-xl mb-4">
 
-                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
-                    Poster Kesehatan
-                    <span class="text-emerald-400">Terbaru</span>
-                </h2>
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
 
-                <p class="text-slate-300 mt-4 lg:mt-5 max-w-2xl">
-                    Kumpulan poster kesehatan terbaru untuk meningkatkan kesadaran hidup sehat.
-                </p>
-            </div>
+            Edukasi Visual Kesehatan
 
-        </div>
+        </span>
+
+        {{-- Judul --}}
+        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl
+                   font-bold leading-tight text-white">
+
+            Poster Kesehatan
+            <span class="text-emerald-400">
+                Terbaru
+            </span>
+
+        </h2>
+
+        {{-- Deskripsi --}}
+        <p class="mt-4 text-sm sm:text-base lg:text-lg
+                  text-slate-300 leading-relaxed
+                  max-w-xl lg:max-w-2xl
+                  mx-auto lg:mx-0">
+
+            Kumpulan poster kesehatan terbaru untuk meningkatkan
+            kesadaran hidup sehat.
+
+        </p>
+
+    </div>
+
+</div>
 
         {{-- MOBILE SLIDER + DESKTOP GRID --}}
         <div
@@ -164,31 +181,29 @@ style="isolation:isolate;"
             <a
                 href="{{ route('posters.index') }}"
                 class="inline-flex items-center gap-3
-                       px-7 py-4
-                       rounded-2xl
-                       bg-emerald-500 hover:bg-emerald-400
+                       px-8 py-4 rounded-2xl
+                       bg-emerald-600
                        text-white font-semibold
-                       shadow-lg shadow-emerald-500/20
-                       transition-all duration-300
-                       hover:scale-[1.02]"
+                       hover:bg-emerald-700
+                       transition"
             >
                 Lihat Semua Poster
 
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
+                  <svg
                     class="w-5 h-5"
                     fill="none"
-                    viewBox="0 0 24 24"
                     stroke="currentColor"
-                    stroke-width="2"
+                    viewBox="0 0 24 24"
                 >
+
                     <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
                     />
-                </svg>
 
+                </svg>
             </a>
 
         </div>

@@ -78,7 +78,7 @@ class PublicController extends Controller
         $latestPosts = $latestArticles
             ->merge($latestVideos)
             ->sortByDesc('published_at')
-            ->take(3);
+            ->take(6);
 
         return view('public.index', compact(
             'articles',

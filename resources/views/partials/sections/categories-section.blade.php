@@ -6,7 +6,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"/>
 
 
-<section class="pb-16 w-full">
+<section class="pb-8 w-full">
 
     {{-- HEADER --}}
     <div class="flex items-center justify-between mb-6">
@@ -22,13 +22,13 @@
 
         {{-- FADE LEFT --}}
         <div class="absolute left-0 top-0 bottom-0 w-4
-                    bg-gradient-to-r from-[#f9f8f6] to-transparent
+                    bg-gradient-to-r from-white to-transparent
                     z-10 pointer-events-none">
         </div>
 
         {{-- FADE RIGHT --}}
         <div class="absolute right-0 top-0 bottom-0 w-4
-                    bg-gradient-to-l from-[#f9f8f6] to-transparent
+                    bg-gradient-to-l from-white to-transparent
                     z-10 pointer-events-none">
         </div>
 

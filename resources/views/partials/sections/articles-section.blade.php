@@ -225,7 +225,7 @@
                        shadow-sm
                        hover:shadow-2xl
                        hover:border-emerald-200
-                       transition-all duration-500"
+                       transition-all duration-500 hidden md:block"
             >
 
                 @if($featuredPosters->count())
@@ -468,7 +468,7 @@
             <a
                 href="{{ route('articles.index') }}"
                 class="inline-flex items-center gap-3
-                       px-8 py-4 rounded-full
+                       px-8 py-4 rounded-2xl
                        bg-emerald-600
                        text-white font-semibold
                        hover:bg-emerald-700

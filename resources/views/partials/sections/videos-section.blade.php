@@ -1,65 +1,51 @@
 <div class="mt-24">
 
-    {{-- HEADER --}}
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-10">
+{{-- HEADER --}}
+<div class="mb-10 lg:mb-12">
 
-        <div>
+    <div class="text-center lg:text-left">
 
-            {{-- BADGE --}}
-            <div class="inline-flex items-center gap-2
-                        px-4 py-2 rounded-full
-                        bg-emerald-50 border border-emerald-100
-                        text-emerald-700 text-xs font-semibold
-                        mb-4">
+        {{-- BADGE --}}
+        <div
+            class="inline-flex items-center gap-2
+                   px-4 py-2 rounded-full
+                   bg-emerald-50 border border-emerald-100
+                   text-emerald-700 text-xs sm:text-sm font-semibold
+                   mb-4">
 
-                <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
 
-                Video Pembelajaran
-
-            </div>
-
-            {{-- TITLE --}}
-            <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
-
-                Video Edukasi
-                <span class="text-emerald-600">
-                    Kesehatan
-                </span>
-
-            </h2>
-
-            {{-- DESC --}}
-            <p class="text-slate-500 mt-3 max-w-2xl leading-relaxed text-sm sm:text-base">
-
-                Kumpulan video edukasi kesehatan terbaru dengan pembahasan
-                menarik dan mudah dipahami untuk meningkatkan kesadaran hidup sehat.
-
-            </p>
+            Video Pembelajaran
 
         </div>
 
-        {{-- BUTTON --}}
-        <a href="{{ route('videos.index') }}"
-           class="group inline-flex items-center justify-center
-                  gap-2 px-5 py-3 rounded-2xl
-                  bg-slate-900 text-white
-                  hover:bg-emerald-600
-                  transition-all duration-300
-                  font-semibold text-sm sm:text-base
-                  w-full sm:w-auto">
+        {{-- TITLE --}}
+        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl
+                   font-bold leading-tight text-slate-800">
 
-            Lihat Semua
+            Video Edukasi
 
-            <span class="transition-transform duration-300
-                         group-hover:translate-x-1">
-
-                →
-
+            <span class="text-emerald-600">
+                Kesehatan
             </span>
 
-        </a>
+        </h2>
+
+        {{-- DESC --}}
+        <p
+            class="mt-4 text-sm sm:text-base
+                   text-slate-500 leading-relaxed
+                   max-w-2xl
+                   mx-auto lg:mx-0">
+
+            Kumpulan video edukasi kesehatan terbaru dengan pembahasan
+            menarik dan mudah dipahami untuk meningkatkan kesadaran hidup sehat.
+
+        </p>
 
     </div>
+
+</div>
 
     {{-- EMPTY --}}
     @if($videos->isEmpty())
@@ -101,46 +87,117 @@
 
     @else
 
-        {{-- GRID --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
+ {{-- MOBILE SLIDER --}}
+<div class="md:hidden">
 
-            @foreach ($videos as $video)
+    <div
+        class="flex gap-5 overflow-x-auto snap-x snap-mandatory
+               scrollbar-hide pb-3">
 
-                <div class="group relative">
+        @foreach($videos as $video)
 
-                    {{-- GLOW --}}
-                    <div class="absolute -inset-1
-                                bg-gradient-to-r
-                                from-emerald-500/0
-                                via-emerald-500/10
-                                to-cyan-500/0
-                                rounded-[30px]
-                                blur-xl opacity-0
-                                group-hover:opacity-100
-                                transition duration-500">
-                    </div>
+            <div
+                class="snap-center shrink-0 w-[88%] sm:w-[70%]">
 
-                    {{-- CARD --}}
-                    <div class="relative h-full
-                                rounded-[28px]
-                                overflow-hidden
-                                bg-white border border-slate-200
-                                hover:border-emerald-200
-                                hover:-translate-y-2
-                                transition-all duration-500">
+                <div
+                    class="rounded-[28px]
+                           overflow-hidden
+                           bg-white
+                           border border-slate-200">
 
-                        @include('partials.cards.video-card', [
-                            'video' => $video
-                        ])
-
-                    </div>
+                    @include('partials.cards.video-card', [
+                        'video' => $video
+                    ])
 
                 </div>
 
-            @endforeach
+            </div>
+
+        @endforeach
+
+    </div>
+
+</div>
+
+{{-- DESKTOP GRID --}}
+<div class="hidden md:grid md:grid-cols-2 xl:grid-cols-3 gap-7">
+
+    @foreach($videos as $video)
+
+        <div class="group relative">
+
+            {{-- Glow --}}
+            <div
+                class="absolute -inset-1
+                       rounded-[30px]
+                       blur-xl
+                       opacity-0
+                       transition
+                       duration-500
+                       bg-gradient-to-r
+                       from-emerald-500/0
+                       via-emerald-500/10
+                       to-cyan-500/0
+                       group-hover:opacity-100">
+            </div>
+
+            <div
+                class="relative
+                       h-full
+                       rounded-[28px]
+                       overflow-hidden
+                       bg-white
+                       border border-slate-200
+                       hover:border-emerald-200
+                       hover:-translate-y-2
+                       transition-all
+                       duration-500">
+
+                @include('partials.cards.video-card', [
+                    'video' => $video
+                ])
+
+            </div>
 
         </div>
 
+    @endforeach
+
+</div>
+
+
     @endif
+    {{-- BUTTON --}}
+<div class="flex justify-center mt-10">
+
+    <a href="{{ route('videos.index') }}"
+       class="inline-flex items-center gap-3
+                       px-8 py-4 rounded-2xl
+                       bg-emerald-600
+                       text-white font-semibold
+                       hover:bg-emerald-700
+                       transition">
+
+        Lihat Semua Video
+
+         <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                    />
+
+        </svg>
+
+    </a>
+
+</div>
 
 </div>
