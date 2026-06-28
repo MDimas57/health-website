@@ -10,9 +10,9 @@
 
             © {{ date('Y') }}
             <span class="font-semibold text-white">
-                Puskesmas Kotabumi
+                Kesehatan Masyarakat 
             </span>
-            • Lampung Utara • Seluruh Hak Cipta Dilindungi.
+            • Universitas Mitra Indonesia - Bandar Lampung • Seluruh Hak Cipta Dilindungi.
 
         </p>
 
