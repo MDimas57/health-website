@@ -66,11 +66,34 @@
                    p-8"
         >
 
-            <p
-                class="leading-8 text-slate-700"
+            <div
+                class="article-content
+                       prose md:prose-lg
+                       max-w-none
+
+                       prose-headings:font-bold
+                       prose-headings:text-slate-900
+
+                       prose-p:text-slate-700
+                       prose-p:leading-8
+
+                       prose-a:text-emerald-600
+
+                       prose-strong:text-slate-900
+
+                       prose-img:rounded-2xl
+                       prose-img:shadow-lg
+
+                       prose-blockquote:border-emerald-500
+                       prose-blockquote:bg-emerald-50
+                       prose-blockquote:rounded-xl
+                       prose-blockquote:px-6
+                       prose-blockquote:py-3"
             >
-                {{ $video->description }}
-            </p>
+
+                {!! str($video->description)->sanitizeHtml() !!}
+
+            </div>
 
         </div>
 

@@ -3,11 +3,11 @@
 namespace App\Filament\Resources\Posters\Schemas;
 
 use Filament\Schemas\Schema;
-
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\RichEditor;
 
 class PosterForm
 {
@@ -27,8 +27,14 @@ class PosterForm
                     ->dehydrated(),
 
                 TextInput::make('title')
+                    ->label('Judul Poster')
                     ->required()
                     ->maxLength(255),
+
+                RichEditor::make('description')
+                    ->label('Deskripsi Poster')
+                    ->placeholder('Masukkan deskripsi atau informasi mengenai poster...')
+                    ->columnSpanFull(),
 
                 FileUpload::make('poster_file')
                     ->label('Poster')
@@ -40,6 +46,7 @@ class PosterForm
                     ->columnSpanFull(),
 
                 Select::make('status')
+                    ->label('Status')
                     ->options([
                         'draft' => 'Draft',
                         'published' => 'Published',

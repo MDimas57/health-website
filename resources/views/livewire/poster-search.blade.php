@@ -246,17 +246,6 @@
 
                             </h3>
 
-
-                            {{-- DESCRIPTION --}}
-                            <p
-                                class="text-white/80 text-sm
-                                       mt-3 line-clamp-3
-                                       leading-relaxed"
-                            >
-
-                                {{ Str::limit(strip_tags($poster->description), 120) }}
-
-                            </p>
                             {{-- ACTION --}}
                             <div class="mt-4">
 
