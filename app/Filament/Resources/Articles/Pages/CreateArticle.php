@@ -11,11 +11,24 @@ class CreateArticle extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['category_id'] = auth()->user()->category_id;
+        // Contributor otomatis menggunakan kategorinya sendiri
+        if (auth()->user()->hasRole('contributor')) {
+            $data['category_id'] = auth()->user()->category_id;
+        }
 
+        // Simpan user pembuat artikel
         $data['user_id'] = auth()->id();
-        $data['published_at'] = now();
+
+        // Isi tanggal publish jika langsung dipublish
+        if ($data['status'] === 'published') {
+            $data['published_at'] = now();
+        }
 
         return $data;
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('index');
     }
 }

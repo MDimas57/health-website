@@ -11,7 +11,12 @@ class CreatePoster extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['category_id'] = auth()->user()->category_id;
+        // Contributor otomatis menggunakan kategorinya sendiri
+        if (auth()->user()->hasRole('contributor')) {
+            $data['category_id'] = auth()->user()->category_id;
+        }
+
+        // Simpan user yang membuat poster
         $data['user_id'] = auth()->id();
 
         if ($data['status'] === 'published') {
@@ -19,5 +24,9 @@ class CreatePoster extends CreateRecord
         }
 
         return $data;
+    }
+    protected function getRedirectUrl(): string
+    {
+        return PosterResource::getUrl('index');
     }
 }

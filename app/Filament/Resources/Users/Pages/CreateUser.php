@@ -17,4 +17,8 @@ class CreateUser extends CreateRecord
             $this->record->assignRole($role);
         }
     }
+      protected function getRedirectUrl(): string
+    {
+        return UserResource::getUrl('index');
+    }
 }

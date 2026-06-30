@@ -6,7 +6,7 @@
                left-1/2 right-1/2
                -translate-x-1/2
                w-screen
-               h-[340px] md:h-[430px] lg:h-[500px]
+               h-[400px] md:h-[500px] lg:h-[580px]
                overflow-hidden">
 
         @if($banner)
@@ -17,8 +17,7 @@
             >
 
             {{-- Overlay lebih terang --}}
-            <div class="absolute inset-0 bg-gradient-to-r from-black/30 via-black/20 to-black/30"></div>
-
+            <div class="absolute inset-0 bg-gradient-to-r from-black/15 via-black/10 to-black/15"></div>
         @else
 
             <div class="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500"></div>
@@ -39,7 +38,7 @@
                            border border-white/20
                            px-5 py-2.5
                            text-white
-                           text-sm">
+                           text-sm font-bold">
 
                     <a href="/" class="hover:text-white/80">
 
@@ -71,15 +70,16 @@
            z-20
            max-w-4xl
            mx-auto
-           px-4
-           -mt-6 md:-mt-8">
+           px-3 sm:px-4
+           -mt-4 sm:-mt-4 md:-mt-4">
 
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
 
         {{-- Artikel --}}
-        <div class="bg-white rounded-lg shadow-md p-3 text-center">
+        <div
+            class="bg-white rounded-xl shadow-md p-3 sm:p-4 text-center transition hover:shadow-lg">
 
-            <p class="text-[10px] text-slate-500 uppercase tracking-wide">
+            <p class="text-[11px] sm:text-xs text-slate-500 uppercase tracking-wide">
                 Artikel
             </p>
 
@@ -87,15 +87,16 @@
                 x-data="counter({{ $articles->count() }})"
                 x-init="start()"
                 x-text="count"
-                class="mt-1 text-2xl font-bold text-emerald-600">
+                class="mt-1 text-xl sm:text-2xl font-bold text-emerald-600">
             </h3>
 
         </div>
 
         {{-- Poster --}}
-        <div class="bg-white rounded-lg shadow-md p-3 text-center">
+        <div
+            class="bg-white rounded-xl shadow-md p-3 sm:p-4 text-center transition hover:shadow-lg">
 
-            <p class="text-[10px] text-slate-500 uppercase tracking-wide">
+            <p class="text-[11px] sm:text-xs text-slate-500 uppercase tracking-wide">
                 Poster
             </p>
 
@@ -103,15 +104,16 @@
                 x-data="counter({{ $posters->count() }})"
                 x-init="start()"
                 x-text="count"
-                class="mt-1 text-2xl font-bold text-sky-600">
+                class="mt-1 text-xl sm:text-2xl font-bold text-sky-600">
             </h3>
 
         </div>
 
         {{-- Video --}}
-        <div class="bg-white rounded-lg shadow-md p-3 text-center">
+        <div
+            class="bg-white rounded-xl shadow-md p-3 sm:p-4 text-center transition hover:shadow-lg">
 
-            <p class="text-[10px] text-slate-500 uppercase tracking-wide">
+            <p class="text-[11px] sm:text-xs text-slate-500 uppercase tracking-wide">
                 Video
             </p>
 
@@ -119,15 +121,16 @@
                 x-data="counter({{ $videos->count() }})"
                 x-init="start()"
                 x-text="count"
-                class="mt-1 text-2xl font-bold text-red-600">
+                class="mt-1 text-xl sm:text-2xl font-bold text-red-600">
             </h3>
 
         </div>
 
         {{-- Catatan --}}
-        <div class="bg-white rounded-lg shadow-md p-3 text-center">
+        <div
+            class="bg-white rounded-xl shadow-md p-3 sm:p-4 text-center transition hover:shadow-lg">
 
-            <p class="text-[10px] text-slate-500 uppercase tracking-wide">
+            <p class="text-[11px] sm:text-xs text-slate-500 uppercase tracking-wide">
                 Catatan
             </p>
 
@@ -135,14 +138,12 @@
                 x-data="counter({{ $notes->count() }})"
                 x-init="start()"
                 x-text="count"
-                class="mt-1 text-2xl font-bold text-amber-500">
+                class="mt-1 text-xl sm:text-2xl font-bold text-amber-500">
             </h3>
 
         </div>
 
     </div>
 
-</div>
-
-
+    </div>
 </section>

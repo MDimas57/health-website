@@ -13,26 +13,31 @@ class NoteForm
 {
     public static function configure(Schema $schema): Schema
     {
-       return $schema->components([
+        return $schema->components([
 
             Hidden::make('user_id')
-                ->default(auth()->id()),
+                ->default(fn () => auth()->id()),
 
             Select::make('category_id')
+                ->label('Kategori')
                 ->relationship('category', 'name')
-                ->default(fn() => auth()->user()->category_id)
-                ->disabled()
-                ->dehydrated()
-                ->required(),
+                ->searchable()
+                ->preload()
+                ->required()
+                ->default(fn () => auth()->user()->category_id)
+                ->disabled(fn () => auth()->user()->hasRole('contributor'))
+                ->dehydrated(),
 
             TextInput::make('title')
-                ->required(),
+                ->required()
+                ->maxLength(192),
 
             RichEditor::make('content')
                 ->required()
                 ->columnSpanFull(),
 
             Toggle::make('is_active')
+                ->label('Aktif')
                 ->default(true),
 
         ]);

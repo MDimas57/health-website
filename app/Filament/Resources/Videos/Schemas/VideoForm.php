@@ -8,6 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\RichEditor;
 
 class VideoForm
 {
@@ -17,10 +18,14 @@ class VideoForm
             ->components([
 
             Select::make('category_id')
-                ->relationship('category', 'name')
-                ->required()
-                ->default(fn () => auth()->user()->category_id)
-                ->disabled(fn () => ! auth()->user()->hasRole('super_admin')),
+                    ->label('Kategori')
+                    ->relationship('category', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->default(fn () => auth()->user()->category_id)
+                    ->disabled(fn () => auth()->user()->hasRole('contributor'))
+                    ->dehydrated(),
 
                 TextInput::make('title')
                     ->required()
@@ -39,6 +44,9 @@ class VideoForm
                     ->url()
                     ->required(),
 
+                RichEditor::make('description')
+                    ->required()
+                    ->columnSpanFull(),
                 Select::make('status')
                     ->options([
                         'draft' => 'Draft',
