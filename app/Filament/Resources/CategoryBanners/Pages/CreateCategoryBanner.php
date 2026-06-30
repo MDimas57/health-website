@@ -9,8 +9,11 @@ class CreateCategoryBanner extends CreateRecord
 {
     protected static string $resource = CategoryBannerResource::class;
 
-    protected function mutateFormDataBeforeCreate(array $data): array
+   protected function mutateFormDataBeforeCreate(array $data): array
     {
+        // Simpan user yang membuat banner
+        $data['user_id'] = auth()->id();
+
         // Contributor otomatis menggunakan kategorinya sendiri
         if (auth()->user()->hasRole('contributor')) {
             $data['category_id'] = auth()->user()->category_id;
