@@ -34,7 +34,7 @@
 
             {{-- Button --}}
             <div class="mt-8 flex justify-center lg:justify-start">
-                <a href="#konten"
+                <a href="{{ route('articles.index') }}"
                     class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm sm:text-base font-medium text-white hover:bg-emerald-700 transition duration-200">
 
                     Baca Artikel
