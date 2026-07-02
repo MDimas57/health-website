@@ -9,6 +9,7 @@ use App\Models\Video;
 use App\Models\Category;
 use App\Models\CategoryBanner;
 use App\Models\Note;
+use App\Models\HeroBanner;
 
 
 class PublicController extends Controller
@@ -79,6 +80,9 @@ class PublicController extends Controller
             ->merge($latestVideos)
             ->sortByDesc('published_at')
             ->take(6);
+        $banners = HeroBanner::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
 
         return view('public.index', compact(
             'articles',
@@ -87,7 +91,8 @@ class PublicController extends Controller
             'categories',
             'featuredArticle',
             'featuredPosters',
-            'latestPosts'
+            'latestPosts',
+            'banners'
         ));
         
     }
@@ -138,6 +143,8 @@ class PublicController extends Controller
         'featuredPosters',
         'latestPosts'
     ));
+
+            
 }
 
     /*
