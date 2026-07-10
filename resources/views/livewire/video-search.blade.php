@@ -92,11 +92,11 @@
                     <div class="relative h-[200px] sm:h-[220px] md:h-[240px] overflow-hidden bg-slate-900">
 
                         <img
-                            src="https://img.youtube.com/vi/{{ \Illuminate\Support\Str::afterLast($video->youtube_url, '=') }}/hqdefault.jpg"
+                            src="https://img.youtube.com/vi/{{ $video->youtube_id }}/hqdefault.jpg"
                             alt="{{ $video->title }}"
-                            class="w-full h-full object-cover
-                                   group-hover:scale-105
-                                   transition duration-700"
+                            class="w-full h-56 object-cover
+                                group-hover:scale-105
+                                transition duration-700"
                         >
 
                         {{-- OVERLAY --}}
