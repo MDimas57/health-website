@@ -57,4 +57,8 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Note::class);
     }
+    public function documents()
+{
+    return $this->hasMany(Document::class);
+}
 }

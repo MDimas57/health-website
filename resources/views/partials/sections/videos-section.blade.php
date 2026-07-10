@@ -3,7 +3,7 @@
                 w-screen
                 ml-[calc(50%-50vw)]
                 overflow-hidden
-                bg-[#FF0000]"> {{-- Menggunakan merah solid YouTube agar kontras dengan putih lebih menyala --}}
+                bg-red-500"> {{-- Menggunakan merah solid YouTube agar kontras dengan putih lebih menyala --}}
 
     {{-- GARIS HITAM DI PALING ATAS SECTION --}}
     <div class="absolute top-0 left-0 w-full h-[6px] bg-black z-20"></div>

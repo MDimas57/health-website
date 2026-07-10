@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DocumentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,3 +88,15 @@ Route::get(
 )->name('category.show');
 Route::get('/konsultasi', [PublicController::class, 'consultation'])
     ->name('consultation');
+
+    //document
+Route::get('/documents', [DocumentController::class, 'index'])
+    ->name('documents.index');
+
+Route::get('/documents/{slug}', [DocumentController::class, 'show'])
+    ->name('documents.show');
+
+Route::get('/documents/{slug}/download', [DocumentController::class, 'download'])
+    ->name('documents.download');
+Route::get('/documents/{slug}/preview', [DocumentController::class, 'preview'])
+    ->name('documents.preview');

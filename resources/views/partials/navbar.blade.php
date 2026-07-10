@@ -109,6 +109,18 @@
                     after:transition-all">
                         Video
                     </a>
+                    {{-- DOCUMENTS --}}
+                    <a href="{{ route('documents.index') }}"
+                    class="relative text-[16px] font-semibold transition
+                    {{ request()->routeIs('documents.*')
+                            ? 'text-white after:w-full'
+                            : 'text-white/90 hover:text-white after:w-0 hover:after:w-full' }}
+                    after:absolute after:left-0 after:-bottom-2
+                    after:h-[2px]
+                    after:bg-red-500
+                    after:transition-all">
+                        Dokumen
+                    </a>
 
                     {{-- DROPDOWN Topik --}}
                     <div class="relative group">
@@ -389,6 +401,34 @@
                                 to-indigo-500
                                 transition-all duration-300
                                 {{ request()->routeIs('videos.*') ? 'w-full' : 'w-0 group-hover:w-full' }}">
+                    </span>
+                </a>
+                {{-- DOKUMEN MOBILE --}}
+                <a href="{{ route('documents.index') }}"
+                   class="group relative
+                        flex items-center gap-3
+                        px-5 py-4
+                        transition-all duration-300
+                        {{ request()->routeIs('documents.*')
+                                ? 'bg-indigo-50/70 text-indigo-700'
+                                : 'text-slate-700 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-indigo-50/50 hover:text-indigo-700' }}"
+                >
+                    <div class="w-10 h-10 rounded-xl
+                                bg-gradient-to-br
+                                from-purple-500
+                                to-indigo-600
+                                text-white
+                                flex items-center justify-center">
+                        <i class="ti ti-file-text"></i>
+                    </div>
+                    <span>Dokumen</span>
+                    <span class="absolute bottom-0 left-0
+                                h-[2px]
+                                bg-gradient-to-r
+                                from-purple-500
+                                to-indigo-500
+                                transition-all duration-300
+                                {{ request()->routeIs('documents.*') ? 'w-full' : 'w-0 group-hover:w-full' }}">
                     </span>
                 </a>
 
