@@ -12,6 +12,7 @@ use App\Models\Note;
 use App\Models\HeroBanner;
 
 
+
 class PublicController extends Controller
 {
     /*
@@ -40,7 +41,11 @@ class PublicController extends Controller
             ->take(6)
             ->get();
 
-        $categories = Category::latest()->get();
+        $categories = Category::orderBy('name')->get();
+
+        $consultationCategories = Category::whereNotNull('consultation_phone')
+            ->orderBy('name')
+            ->get();
 
         $featuredArticle = Article::with('category')
             ->where('status', 'published')
@@ -89,6 +94,7 @@ class PublicController extends Controller
             'posters',
             'videos',
             'categories',
+            'consultationCategories',
             'featuredArticle',
             'featuredPosters',
             'latestPosts',
@@ -208,6 +214,8 @@ class PublicController extends Controller
             ->where('status', 'published')
             ->firstOrFail();
 
+        $article->increment('views');
+
         // RELATED ARTICLE (lebih relevan: berdasarkan kategori)
         $relatedArticles = Article::with('category')
             ->where('status', 'published')
@@ -268,11 +276,21 @@ class PublicController extends Controller
 
 public function posters()
 {
-    return view('public.posters.index');
+    $posters = Poster::with(['category','user'])
+        ->published()
+        ->latest()
+        ->paginate(12);
+
+    return view('public.posters.index', compact('posters'));
 }
     public function videos()
 {
-    return view('public.videos.index');
+    $videos = Video::with(['category','user'])
+        ->published()
+        ->latest()
+        ->paginate(12);
+
+    return view('public.videos.index', compact('videos'));
 }
 
 public function category($slug)
@@ -372,5 +390,11 @@ public function videoShow($slug)
         'relatedVideos' => $relatedVideos,
     ]);
 }
-    
+public function consultation()
+{
+    $categories = Category::orderBy('name')->get();
+
+    return view('public.consultation', compact('categories'));
+}   
 }
+

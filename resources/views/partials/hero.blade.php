@@ -152,4 +152,13 @@
 
     @endforeach
 
+    {{-- Indicators --}}
+    <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+        @foreach($banners as $index => $banner)
+            <button
+                class="w-3 h-3 rounded-full {{ $loop->first ? 'bg-white' : 'bg-white/50' }}"
+                aria-label="Go to slide {{ $index + 1 }}"
+            ></button>
+        @endforeach
+    </div>
 </section>

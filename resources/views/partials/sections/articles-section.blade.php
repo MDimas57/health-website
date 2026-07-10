@@ -22,9 +22,12 @@
     animation: rotateWords 9s infinite;
 }
 </style>
+<div class="relative w-screen left-1/2 -translate-x-1/2 h-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 opacity-20"></div>
 <section class="relative w-screen
            left-1/2 -translate-x-1/2
-           bg-white
+           bg-gradient-to-r
+            from-blue-800
+            to-blue-800
            py-16 lg:py-24
            overflow-hidden">
 
@@ -44,20 +47,19 @@
                 class="max-w-2xl mx-auto text-center mb-12 lg:mb-20"
             >
 
+                {{-- Diubah ke tema Indigo lembut --}}
                 <span
                     class="inline-flex items-center gap-2
                         px-4 py-2 rounded-full
-                        bg-emerald-50
-                        border border-emerald-100
-                        text-emerald-700 text-xs sm:text-sm font-medium"
+                        bg-indigo-50
+                        border border-indigo-100
+                        text-indigo-700 text-xs sm:text-sm font-medium"
                 >
                     Konten Terbaru
                 </span>
 
-               <h2 class="mt-4
-                            text-3xl
-                            sm:text-4xl
-                            lg:text-5xl
+               <h2 class="mt-3
+                            text-3xl sm:text-4xl lg:text-5xl
                             font-bold
                             text-center">
                     <div
@@ -83,6 +85,7 @@
 
                             <template x-for="(word,index) in words" :key="index">
 
+                                {{-- Warna teks diubah ke text-indigo-600 --}}
                                 <span
                                     x-show="current===index"
                                     x-transition:enter="transition duration-700 ease-out"
@@ -91,7 +94,7 @@
                                     x-transition:leave="transition duration-700 ease-in"
                                     x-transition:leave-start="opacity-100 translate-y-0"
                                     x-transition:leave-end="opacity-0 -translate-y-5"
-                                    class="absolute inset-0 flex items-center justify-end text-emerald-600"
+                                    class="absolute inset-0 flex items-center justify-end text-red-500 text-3xl sm:text-4xl lg:text-5xl font-bold text-indigo-600"
                                     x-text="word"
                                 ></span>
 
@@ -99,7 +102,7 @@
 
                         </div>
 
-                        <span class="text-slate-900">
+                        <span class="text-white text-3xl sm:text-4xl lg:text-5xl font-bold">
                             Kesehatan
                         </span>
 
@@ -108,8 +111,9 @@
                 </h2>
 
                 <p
-                    class="mt-4
-                        text-slate-600
+                    class="mt-3
+                        text-white/90
+                        max-w-2xl mx-auto
                         leading-relaxed
                         text-base
                         lg:text-lg
@@ -127,6 +131,7 @@
             {{-- FEATURED ARTICLE --}}
             @if($featuredArticle)
 
+                {{-- Hover border diubah ke hover:border-indigo-200 --}}
                 <a
                     href="{{ route('articles.show', $featuredArticle->slug) }}"
                     class="lg:col-span-8
@@ -136,7 +141,7 @@
                            border border-slate-200
                            shadow-sm
                            hover:shadow-2xl
-                           hover:border-emerald-200
+                           hover:border-indigo-200
                            transition-all duration-500
                            group"
                 >
@@ -175,9 +180,10 @@
                                 {{ optional($featuredArticle->category)->name ?? 'Kesehatan' }}
                             </span>
 
+                            {{-- Label Badge diubah ke bg-indigo-600 --}}
                             <span
                                 class="px-4 py-2 rounded-full
-                                       bg-emerald-600
+                                       bg-indigo-600
                                        text-white text-xs font-semibold"
                             >
                                 Artikel
@@ -201,12 +207,19 @@
                                 {{ $featuredArticle->title }}
                             </h3>
 
-                            <p
-                                class="mt-4 text-white/90
-                                       max-w-2xl line-clamp-2"
+                           <div
+                                class="mt-4
+                                    max-w-2xl
+                                    prose prose-invert
+                                    prose-p:text-white/90
+                                    prose-headings:text-white
+                                    prose-strong:text-white
+                                    prose-a:text-cyan-300
+                                    line-clamp-3
+                                    overflow-hidden"
                             >
-                                {{ \Illuminate\Support\Str::limit(strip_tags($featuredArticle->content), 140) }}
-                            </p>
+                                {!! $featuredArticle->content !!}
+                            </div>
 
                         </div>
 
@@ -217,6 +230,7 @@
             @endif
 
             {{-- FEATURED POSTER --}}
+            {{-- Hover border diubah ke hover:border-indigo-200 --}}
             <div
                 class="lg:col-span-4
                        rounded-[32px]
@@ -224,7 +238,7 @@
                        border border-slate-200
                        shadow-sm
                        hover:shadow-2xl
-                       hover:border-emerald-200
+                       hover:border-indigo-200
                        transition-all duration-500 hidden md:block"
             >
 
@@ -285,7 +299,7 @@
                                     class="inline-flex items-center gap-2
                                            px-4 py-2 rounded-full
                                            bg-white/15 backdrop-blur
-                                           text-white text-sm"
+                                           text-white text-sm hover:bg-white/25 transition"
                                 >
                                     Lihat Poster →
                                 </span>
@@ -302,177 +316,190 @@
 
         </div>
 
-        {{-- LATEST CONTENT --}}
-       <div
-            x-data="autoSlider()"
-            x-init="start()"
-            x-ref="slider"
-            class="
-                flex
-                md:grid md:grid-cols-2
-                lg:grid-cols-3
+{{-- LATEST CONTENT --}}
+<div
+    x-data="autoSlider()"
+    x-init="start()"
+    x-ref="slider"
+    class="
+        flex
+        md:grid md:grid-cols-2
+        lg:grid-cols-3
 
-                gap-5 lg:gap-7
+        gap-5 lg:gap-7
 
-                overflow-x-auto
-                md:overflow-visible
+        overflow-x-auto
+        md:overflow-visible
 
-                snap-x snap-mandatory
-                scrollbar-hide
+        snap-x snap-mandatory
+        scrollbar-hide
 
-                scroll-smooth
-                pb-2
-            "
+        scroll-smooth
+        pb-2
+    "
+>
+    @foreach($latestPosts as $post)
+
+        {{-- Hover border diubah ke hover:border-indigo-200 --}}
+        <a
+            href="{{ $post->content_type === 'video'
+                ? route('videos.show', $post->slug)
+                : route('articles.show', $post->slug) }}"
+            class="group min-w-[85%] sm:min-w-[70%] md:min-w-0 snap-center bg-white
+                rounded-[28px]
+                overflow-hidden
+                border border-slate-200
+                shadow-sm
+                hover:shadow-xl
+                hover:-translate-y-2
+                hover:border-indigo-200
+                transition-all duration-500"
         >
-            @foreach($latestPosts as $post)
 
-                <a
-                    href="{{ $post->content_type === 'video'
-                        ? route('videos.show', $post->slug)
-                        : route('articles.show', $post->slug) }}"
-                    class="group min-w-[85%] sm:min-w-[70%] md:min-w-0 snap-center bg-white
-                        rounded-[28px]
-                        overflow-hidden
-                        border border-slate-200
-                        shadow-sm
-                        hover:shadow-xl
-                        hover:-translate-y-2
-                        hover:border-emerald-200
-                        transition-all duration-500"
-                >
+            {{-- IMAGE --}}
+            <div class="h-48 sm:h-56 overflow-hidden">
 
-                    {{-- IMAGE --}}
-                    <div class="h-48 sm:h-56 overflow-hidden">
+             @if($post->content_type === 'video')
 
-                     @if($post->content_type === 'video')
+                    <div class="relative w-full h-full">
 
-                            <div class="relative w-full h-full">
+                        <img
+                            src="https://img.youtube.com/vi/{{ $post->youtube_id }}/hqdefault.jpg"
+                            class="w-full h-full object-cover
+                                group-hover:scale-105
+                                transition duration-700"
+                        >
 
-                                <img
-                                    src="https://img.youtube.com/vi/{{ $post->youtube_id }}/hqdefault.jpg"
-                                    class="w-full h-full object-cover
-                                        group-hover:scale-105
-                                        transition duration-700"
+                        {{-- OVERLAY --}}
+                        <div class="absolute inset-0 bg-black/20"></div>
+
+                        {{-- PLAY BUTTON (Tetap Merah Khas YouTube asli agar familiar) --}}
+                        <div
+                            class="absolute inset-0
+                                 flex items-center justify-center"
+                        >
+
+                            <div
+                                class="w-16 h-16 rounded-full
+                                    bg-red-600/95
+                                    shadow-2xl
+                                    flex items-center justify-center
+                                    group-hover:scale-110
+                                    transition duration-300"
+                            >
+
+                                <svg
+                                    class="w-8 h-8 text-white ml-1"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
                                 >
 
-                                {{-- OVERLAY --}}
-                                <div class="absolute inset-0 bg-black/20"></div>
+                                    <path d="M8 5v14l11-7z"/>
 
-                                {{-- PLAY BUTTON --}}
-                                <div
-                                    class="absolute inset-0
-                                        flex items-center justify-center"
-                                >
-
-                                    <div
-                                        class="w-16 h-16 rounded-full
-                                            bg-red-600/95
-                                            shadow-2xl
-                                            flex items-center justify-center
-                                            group-hover:scale-110
-                                            transition duration-300"
-                                    >
-
-                                        <svg
-                                            class="w-8 h-8 text-white ml-1"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-
-                                            <path d="M8 5v14l11-7z"/>
-
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                {{-- LABEL VIDEO --}}
-                                <div class="absolute top-4 left-4">
-
-                                </div>
+                                </svg>
 
                             </div>
 
-                        @else
+                        </div>
 
-                            <img
-                                src="{{ $post->thumbnail
-                                    ? asset('storage/' . $post->thumbnail)
-                                    : asset('images/default.jpg') }}"
-                                class="w-full h-full object-cover
-                                       group-hover:scale-105
-                                       transition duration-700"
-                            >
-
-                        @endif
-
-                    </div>
-
-                    {{-- CONTENT --}}
-                    <div class="p-5 lg:p-6">
-
-                        <span
-                            class="inline-flex px-3 py-1 rounded-full
-                                   bg-emerald-50
-                                   border border-emerald-100
-                                   text-emerald-700
-                                   text-xs font-medium"
-                        >
-                            {{ $post->content_type === 'video'
-                                ? 'Video'
-                                : 'Artikel' }}
-                        </span>
-
-                        <h3 class="mt-4
-                                text-lg lg:text-xl
-                                font-bold
-                                text-slate-900
-                                line-clamp-2
-                                group-hover:text-emerald-600
-                                transition"
-                            >
-                            {{ $post->title }}
-                        </h3>
-
-                        <p
-                            class="mt-3 text-slate-600
-                                   text-sm leading-relaxed
-                                   line-clamp-3"
-                        >
-                            {{ \Illuminate\Support\Str::limit(strip_tags($post->content ?? ''), 120) }}
-                        </p>
-
-                        <div
-                            class="mt-5 flex items-center gap-2
-                                   text-sm text-slate-500"
-                        >
-
-                            <span>
-                                {{ $post->created_at->format('d M Y') }}
-                            </span>
+                        <div class="absolute top-4 left-4">
 
                         </div>
 
                     </div>
 
-                </a>
+                @else
 
-            @endforeach
+                    <img
+                        src="{{ $post->thumbnail
+                            ? asset('storage/' . $post->thumbnail)
+                            : asset('images/default.jpg') }}"
+                        class="w-full h-full object-cover
+                               group-hover:scale-105
+                               transition duration-700"
+                    >
 
-        </div>
+                @endif
+
+            </div>
+
+            {{-- CONTENT --}}
+            <div class="p-5 lg:p-6">
+
+                {{-- Badge tipe diubah ke bg-indigo-50 dan text-indigo-700 --}}
+                <span
+                    class="inline-flex px-3 py-1 rounded-full
+                           bg-indigo-50
+                           border border-indigo-100
+                           text-indigo-700
+                           text-xs font-medium"
+                >
+                    {{ $post->content_type === 'video' ? 'Video' : 'Artikel' }}
+                </span>
+
+                {{-- Hover text diubah ke group-hover:text-indigo-600 --}}
+                <h3 class="mt-4
+                        text-lg lg:text-xl
+                        font-bold
+                        text-slate-900
+                        line-clamp-2
+                        group-hover:text-indigo-600
+                        transition"
+                    >
+                    {{ $post->title }}
+                </h3>
+
+                {{-- PERBAIKAN: Menampilkan deskripsi video atau konten artikel secara dinamis --}}
+                <div
+                    class="mt-3
+                        text-slate-600
+                        text-sm
+                        leading-relaxed
+                        prose prose-sm
+                        max-w-none
+                        line-clamp-3
+                        overflow-hidden"
+                >
+                    @if($post->content_type === 'video')
+                        {!! $post->description !!}
+                    @else
+                        {!! $post->content !!}
+                    @endif
+                </div>
+
+                <div
+                    class="mt-5 flex items-center gap-2
+                           text-sm text-slate-500"
+                >
+
+                    <span>
+                        {{ $post->created_at->format('d M Y') }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    @endforeach
+
+</div>
 
         {{-- BUTTON --}}
-        <div class="mt-12 text-center">
+        <div class="flex justify-center mt-12 lg:mt-16">
 
+            {{-- Diubah dari bg-emerald ke gradasi biru-indigo yang modern sesuai tema --}}
             <a
                 href="{{ route('articles.index') }}"
-                class="inline-flex items-center gap-3
+                class="inline-flex items-center gap-2.5
                        px-8 py-4 rounded-2xl
-                       bg-emerald-600
-                       text-white font-semibold
-                       hover:bg-emerald-700
-                       transition"
+                       bg-gradient-to-r from-red-500 to-rose-600
+                       text-white text-sm font-semibold
+                       shadow-lg shadow-indigo-600/20
+                       hover:shadow-indigo-600/30
+                       hover:scale-105
+                       transition duration-300"
             >
 
                 Lihat Semua Konten

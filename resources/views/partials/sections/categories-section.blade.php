@@ -12,7 +12,7 @@
     <div class="flex items-center justify-between mb-6">
 
         <h2 class="text-2xl font-bold text-slate-800">
-            Kategori Unggulan
+            Topik Kesehatan
         </h2>
 
     </div>
@@ -128,9 +128,10 @@
     transition: .3s;
 }
 
+
 .owl-dots .owl-dot.active span {
     width: 28px;
-    background: #0f172a;
+    background: #4f46e5; 
 }
 </style>
 

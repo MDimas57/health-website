@@ -16,6 +16,8 @@ class Category extends Model
         'image',
         'color',
         'description',
+        'consultation_name',
+        'consultation_phone',
     ];
 
     /**

@@ -1,4 +1,3 @@
-
 {{-- FULL BLEED POSTER SECTION --}}
 <section
 x-data="{
@@ -34,96 +33,86 @@ x-data="{
         this.index = (this.index - 1 + this.images.length) % this.images.length
     }
 }"
-class="relative py-14 lg:py-20
+class="relative py-16 lg:py-24
        w-screen
        ml-[calc(50%-50vw)]
        overflow-hidden
-       bg-[#d9d6d1]"
+       bg-white"
 style="isolation:isolate;"
 >
 
-    {{-- BACKGROUND --}}
-    <div class="absolute inset-0 bg-gradient-to-br from-[#161616] via-[#1b1b1b] to-[#252525]"></div>
+    {{-- TRANSISI JEMBATAN WARNA --}}
+    <div class="absolute top-0 left-0 right-0 h-24 lg:h-32 bg-gradient-to-b from-slate-900 to-white z-10 opacity-10"></div>
 
-    <div class="absolute -top-32 -left-32 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-emerald-500/10 rounded-full blur-3xl"></div>
+    {{-- TRANSISI GRADIENT BORDER --}}
+    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 opacity-40 z-20"></div>
 
-    <div class="absolute -bottom-32 -right-32 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-slate-500/10 rounded-full blur-3xl"></div>
+    {{-- BACKGROUND DECORATION --}}
+    <div class="absolute top-10 -left-32 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-blue-200/40 rounded-full blur-3xl z-0"></div>
+    <div class="absolute top-20 left-1/3 w-[250px] h-[250px] lg:w-[400px] lg:h-[400px] bg-purple-200/30 rounded-full blur-3xl z-0"></div>
+    <div class="absolute bottom-0 -right-32 w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-rose-200/30 rounded-full blur-3xl z-0"></div>
 
     <div
-        class="absolute inset-0 opacity-[0.03]"
-        style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 22px 22px;"
+        class="absolute inset-0 opacity-[0.07] z-0"
+        style="background-image: radial-gradient(#6366f1 1.5px, transparent 1.5px); background-size: 24px 24px;"
     ></div>
 
     {{-- CONTENT --}}
-    <div class="relative z-10 max-w-[1250px] mx-auto px-4 lg:px-8">
-{{-- HEADER --}}
-<div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 sm:mb-10 lg:mb-12">
-
-    <div class="w-full text-center lg:text-left">
-
-        {{-- Badge --}}
-        <span
-            class="inline-flex items-center gap-2 px-3 sm:px-4 py-2
-                   rounded-full bg-white/5 border border-white/10
-                   text-emerald-300 text-xs sm:text-sm font-medium
-                   backdrop-blur-xl mb-4">
-
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-
-            Edukasi Visual Kesehatan
-
-        </span>
-
-        {{-- Judul --}}
-        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl
-                   font-bold leading-tight text-white">
-
-            Poster Kesehatan
-            <span class="text-emerald-400">
-                Terbaru
+    <div class="relative z-10 max-w-7xl mx-auto px-4 lg:px-8">
+        
+        {{-- HEADER POSTER --}}
+        <div class="max-w-2xl mx-auto text-center mb-12 lg:mb-20">
+            <span
+                class="inline-flex items-center gap-2
+                       px-4 py-2 rounded-full
+                       bg-indigo-50
+                       border border-indigo-100
+                       text-indigo-700 text-xs sm:text-sm font-medium"
+            >
+                Edukasi Visual Kesehatan
             </span>
 
-        </h2>
+            <h2 class="text-slate-900 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mt-3">
+                Poster Kesehatan
+                <span class="text-indigo-600">
+                    Terbaru
+                </span>
+            </h2>
 
-        {{-- Deskripsi --}}
-        <p class="mt-4 text-sm sm:text-base lg:text-lg
-                  text-slate-300 leading-relaxed
-                  max-w-xl lg:max-w-2xl
-                  mx-auto lg:mx-0">
-
-            Kumpulan poster kesehatan terbaru untuk meningkatkan
-            kesadaran hidup sehat.
-
-        </p>
-
-    </div>
-
-</div>
+            <p class="mt-3 text-slate-600 max-w-2xl mx-auto leading-relaxed text-base lg:text-lg px-2">
+                Kumpulan poster kesehatan terbaru untuk meningkatkan kesadaran hidup 
+                sehat secara visual dan aplikatif yang mudah dipahami oleh masyarakat.
+            </p>
+        </div>
 
         {{-- MOBILE SLIDER + DESKTOP GRID --}}
+        {{-- Mengubah grid-cols-4 menjadi col-gap dan penyesuaian layout agar pas saat card membesar --}}
         <div
             class="flex lg:grid lg:grid-cols-4
-                   gap-5 lg:gap-7
+                   gap-6 lg:gap-8
                    overflow-x-auto overflow-y-visible
                    lg:overflow-visible
                    snap-x snap-mandatory
-                   scrollbar-hide pb-3"
+                   scrollbar-hide pb-5"
         >
 
             @foreach ($posters->take(4) as $poster)
 
-                <div class="relative min-w-[85%] sm:min-w-[48%] lg:min-w-0 snap-center">
+                {{-- MENINGKATKAN MIN-WIDTH MOBILE AGAR CARD LEBIH LEBAR SEDIKIT --}}
+                <div class="relative min-w-[88%] sm:min-w-[48%] lg:min-w-0 snap-center">
 
                     <div
                         @click="openModal({{ $loop->index }})"
                         class="relative group overflow-hidden
                                rounded-[24px] lg:rounded-[28px]
-                               h-[420px] sm:h-[450px] lg:h-[480px]
+                               h-[450px] sm:h-[480px] lg:h-[520px] {{-- UKURAN TINGGI DIPERBESAR (Sebelumnya: 420px/450px/480px) --}}
                                cursor-pointer
-                               bg-white/5 border border-white/10
-                               backdrop-blur-sm
+                               bg-white 
+                               border-2 border-slate-200
+                               shadow-[0_8px_30px_rgb(0,0,0,0.04)] 
+                               hover:shadow-[0_20px_50px_rgba(59,130,246,0.2)]
                                hover:-translate-y-2
-                               hover:border-white/20
+                               hover:border-red-500
                                transition-all duration-500"
                     >
 
@@ -135,33 +124,33 @@ style="isolation:isolate;"
                                    group-hover:scale-105 transition duration-700"
                         >
 
-                        {{-- OVERLAY --}}
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                        {{-- OVERLAY GRADIENT (OPACITY DIURANGI AGAR LEBIH TRANSPARAN) --}}
+                        {{-- Mengubah dari from-blue-950/90 ke from-blue-950/75, dan dari via-blue-900/40 ke via-blue-900/20 --}}
+                        <div class="absolute inset-0 bg-gradient-to-t from-blue-950/65 via-blue-900/10 to-transparent"></div>
 
                         {{-- CATEGORY --}}
                         <div class="absolute top-4 left-4 z-20">
-
                             <span
-                                class="inline-flex items-center px-3 py-1.5
+                                class="inline-flex items-center px-2.5 py-1
                                        rounded-full
-                                       bg-emerald-500/90
-                                       text-white text-[11px] lg:text-xs
-                                       font-semibold
-                                       shadow-lg backdrop-blur-md"
+                                       bg-blue-600
+                                       text-white text-[10px] md:text-xs
+                                      tracking-wider
+                                       shadow-md"
                             >
                                 {{ $poster->category?->name ?? 'Poster' }}
                             </span>
-
                         </div>
 
-                        {{-- CONTENT --}}
-                        <div class="absolute bottom-0 left-0 right-0 p-5 lg:p-6 text-white">
+                        {{-- CONTENT TEXT DI ATAS CARD --}}
+                        <div class="absolute bottom-0 left-0 right-0 p-5 lg:p-6 text-white z-10">
 
-                            <div class="text-white/70 text-xs lg:text-sm mb-2">
+                            <div class="text-blue-200 text-xs mb-1.5 font-medium">
                                 {{ $poster->created_at->format('d M Y') }}
                             </div>
 
-                            <h3 class="font-bold text-lg line-clamp-2">
+                            {{-- Ditambahkan text-shadow tipis (drop-shadow) agar teks putih tetap terbaca sangat tajam karena opacity gradient dikurangi --}}
+                            <h3 class="font-bold text-base md:text-lg line-clamp-2 leading-snug group-hover:text-red-400 transition duration-300 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                                 {{ $poster->title }}
                             </h3>
 
@@ -176,53 +165,39 @@ style="isolation:isolate;"
         </div>
 
         {{-- BUTTON LIHAT SEMUA --}}
-        <div class="flex justify-center mt-10 lg:mt-14">
-
+        <div class="flex justify-center mt-12 lg:mt-16">
             <a
                 href="{{ route('posters.index') }}"
-                class="inline-flex items-center gap-3
+                class="inline-flex items-center gap-2.5
                        px-8 py-4 rounded-2xl
-                       bg-emerald-600
-                       text-white font-semibold
-                       hover:bg-emerald-700
-                       transition"
+                       bg-gradient-to-r from-red-500 to-rose-600
+                       text-white text-sm font-semibold
+                       shadow-lg shadow-red-500/20
+                       hover:shadow-red-500/30
+                       hover:scale-105
+                       transition duration-300"
             >
                 Lihat Semua Poster
 
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M9 5l7 7-7 7"
-                    />
-
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
             </a>
-
         </div>
 
     </div>
 
     {{-- MODAL FULLSCREEN --}}
     <template x-teleport="body">
-
         <div
             x-show="open"
             x-transition.opacity
             x-cloak
-            class="fixed inset-0 z-[9999999999] bg-black/95 backdrop-blur-sm"
+            class="fixed inset-0 z-[9999999999] bg-slate-950/95 backdrop-blur-md"
             @keydown.escape.window="closeModal()"
             @keydown.arrow-right.window="next()"
             @keydown.arrow-left.window="prev()"
         >
-
             {{-- HEADER INFO --}}
             <div
                 class="absolute top-0 left-0 right-0 z-[99999999999]
@@ -231,21 +206,17 @@ style="isolation:isolate;"
                        pt-20 lg:pt-8
                        pb-8"
             >
-
                 <div class="max-w-5xl mx-auto">
-
-                    {{-- CATEGORY --}}
                     <span
                         class="inline-flex items-center px-3 py-1.5
                                rounded-full
-                               bg-emerald-500/90
+                               bg-blue-600
                                text-white text-xs
                                font-semibold
                                mb-4"
                         x-text="current.category"
                     ></span>
                 </div>
-
             </div>
 
             {{-- CLOSE --}}
@@ -292,9 +263,8 @@ style="isolation:isolate;"
                 ›
             </button>
 
-            {{-- IMAGE --}}
+            {{-- IMAGE container --}}
             <div class="absolute inset-0 flex items-center justify-center p-4 sm:p-6">
-
                 <img
                     :src="current.image"
                     :alt="current.title"
@@ -303,11 +273,8 @@ style="isolation:isolate;"
                            w-auto h-auto
                            object-contain mx-auto"
                 >
-
             </div>
-
         </div>
-
     </template>
 
 </section>

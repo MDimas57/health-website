@@ -85,3 +85,5 @@ Route::get(
     '/category/{slug}',
     [CategoryController::class, 'show']
 )->name('category.show');
+Route::get('/konsultasi', [PublicController::class, 'consultation'])
+    ->name('consultation');

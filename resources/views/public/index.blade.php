@@ -37,7 +37,7 @@
         </div>
 
         {{-- VIDEOS --}}
-        <div class="mt-20 mb-20">
+        <div>
 
             @include('partials.sections.videos-section', [
                 'videos' => $videos

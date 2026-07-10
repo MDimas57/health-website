@@ -24,9 +24,60 @@
     body {
         font-family: 'Inter', sans-serif;
     }
+@keyframes wobble {
+    0%, 90%, 100% { transform: rotate(0deg); }
+    92% { transform: rotate(-8deg); }
+    94% { transform: rotate(7deg); }
+    96% { transform: rotate(-5deg); }
+    98% { transform: rotate(3deg); }
+}
 </style>
  @stack('scripts')
+@unless(Route::is('consultation'))
+<a href="{{ route('consultation') }}"
+   class="fixed bottom-6 right-6 z-50 group pointer-events-auto"
+   aria-label="Konsultasi Kesehatan">
 
+    {{-- Efek Lingkaran Memancar (Ping/Ripple) - Diubah menjadi Merah --}}
+    <!-- <span class="absolute inset-0 rounded-full bg-red-500/40 scale-105 animate-ping opacity-75 pointer-events-none group-hover:duration-300"></span> -->
+
+    {{-- Tooltip Kecil Mobile --}}
+    <span class="absolute bottom-full right-1/2 translate-x-1/2 lg:translate-x-0 lg:right-0 mb-3 
+                 scale-0 group-hover:scale-100 md:group-hover:scale-0
+                 bg-zinc-900 text-white text-xs font-medium px-3 py-1.5 rounded-xl shadow-xl 
+                 transition-all duration-300 whitespace-nowrap backdrop-blur-sm bg-opacity-90">
+        Konsultasi Yuk!
+        <span class="absolute top-full right-1/2 translate-x-1/2 w-2 h-2 bg-zinc-900 rotate-45"></span>
+    </span>
+
+    {{-- Tombol Utama dengan Background Merah, Garis Putih (border-2 border-white), dan Glow Merah --}}
+    <div
+        class="flex items-center justify-center gap-2.5
+               bg-gradient-to-r from-red-600 to-red-500
+               hover:from-red-700 hover:to-red-600
+               text-white
+               border-2 border-white
+               /* Responsif Ukuran */
+               p-4 md:px-5 md:py-3.5
+               rounded-full
+               shadow-[0_8px_30px_rgb(239,68,68,0.4)]
+               hover:shadow-[0_8px_35px_rgb(239,68,68,0.6)]
+               transition-all duration-300 ease-out
+               hover:scale-110 active:scale-95
+               animate-[wobble_3s_ease-in-out_infinite]">
+
+        {{-- Icon diubah menjadi icon stetoskop / chat kesehatan agar lebih cocok dengan warna merah --}}
+        <i class="ti ti-messages text-2xl md:text-3xl transition-transform duration-500 group-hover:rotate-[360deg]"></i>
+
+        {{-- Teks Deskripsi --}}
+        <span class="hidden md:block font-bold text-sm tracking-wide">
+            Konsultasi di sini!
+        </span>
+
+    </div>
+
+</a>
+@endunless
 <body class="bg-white text-slate-800">
   @include('partials.navbar')
 
