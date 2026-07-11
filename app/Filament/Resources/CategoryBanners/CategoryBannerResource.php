@@ -22,7 +22,7 @@ class CategoryBannerResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
     protected static ?string $navigationLabel = 'Banner Kategori';
-    protected static string | \UnitEnum | null $navigationGroup = 'Banner Kategori';
+    protected static string | \UnitEnum | null $navigationGroup = 'Website';
     protected static ?string $recordTitleAttribute = 'categorybanner';
 
     public static function form(Schema $schema): Schema

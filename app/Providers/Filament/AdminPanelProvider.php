@@ -21,6 +21,8 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Widgets\WelcomeWidget;
 use App\Filament\Widgets\AdminStatsOverview;
 use App\Filament\Widgets\ContributorStatsOverview;
+use App\Filament\Widgets\ContentChartWidget;
+use App\Filament\Widgets\ContributorContentWidget;
 // use App\Filament\Widgets\ArticleChart;
 // use App\Filament\Widgets\LatestArticles;
 // use App\Filament\Widgets\LatestPosters;
@@ -76,6 +78,8 @@ class AdminPanelProvider extends PanelProvider
 
                 ContributorStatsOverview::class,
 
+                ContentChartWidget::class,
+                ContributorContentWidget::class,
                 // ArticleChart::class,
 
                 // LatestArticles::class,

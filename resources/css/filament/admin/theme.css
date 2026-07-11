@@ -4,16 +4,99 @@
 @source '../../../../resources/views/filament/**/*';
 @source '../../../../resources/views/**/*.blade.php';
 
-/* Custom CSS */
+/* =========================
+   Sidebar
+========================= */
+
+/* =========================
+   Sidebar
+========================= */
 
 .fi-sidebar {
     @apply bg-slate-900;
 }
 
-.fi-topbar {
-    @apply bg-white;
+/* Semua link */
+.fi-sidebar a {
+    @apply text-slate-300;
 }
 
-.fi-main {
-    @apply bg-slate-50;
+/* Semua icon */
+.fi-sidebar svg {
+    @apply text-slate-400;
+}
+
+/* Hover */
+.fi-sidebar a:hover {
+    @apply bg-slate-800 text-white;
+}
+
+.fi-sidebar a:hover svg {
+    @apply text-cyan-400;
+}
+
+/* Menu aktif */
+.fi-sidebar a[aria-current="page"] {
+    @apply bg-cyan-600 text-white rounded-xl;
+}
+
+.fi-sidebar a[aria-current="page"] * {
+    @apply text-white;
+}
+
+.fi-sidebar a[aria-current="page"] svg {
+    @apply text-white;
+}
+
+/* Group label */
+.fi-sidebar-group-label {
+    @apply text-slate-400;
+}
+
+/* =========================
+   Topbar
+========================= */
+
+.fi-topbar{
+    @apply bg-white dark:bg-gray-900;
+}
+
+/* =========================
+   Main
+========================= */
+
+.fi-main{
+    @apply bg-slate-50 dark:bg-gray-950;
+}
+
+/* =========================
+   Section
+========================= */
+
+.fi-section{
+    @apply bg-white dark:bg-gray-900;
+}
+
+/* =========================
+   Card
+========================= */
+
+.fi-card{
+    @apply bg-white dark:bg-gray-900;
+}
+
+/* =========================
+   Tables
+========================= */
+
+.fi-ta-table{
+    @apply bg-white dark:bg-gray-900;
+}
+
+/* =========================
+   Modal
+========================= */
+
+.fi-modal-window{
+    @apply bg-white dark:bg-gray-900;
 }

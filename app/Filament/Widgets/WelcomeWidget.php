@@ -8,8 +8,7 @@ class WelcomeWidget extends Widget
 {
     protected string $view = 'filament.widgets.welcome-widget';
 
-    protected int|string|array $columnSpan = 'full';
+    protected static ?int $sort = -10;
 
-    protected static ?int $sort = 1;
-    
+    protected int|string|array $columnSpan = 'full';
 }

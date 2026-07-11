@@ -29,7 +29,10 @@ class HeroBannerResource extends Resource
     {
         return HeroBannerForm::configure($schema);
     }
-
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('super_admin');
+    }
     public static function table(Table $table): Table
     {
         return HeroBannersTable::configure($table);
