@@ -10,8 +10,9 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Actions\EditAction;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\BulkActionGroup;
 class DocumentsTable
@@ -22,25 +23,12 @@ class DocumentsTable
 
             ->columns([
 
-                
-                /*
-                |--------------------------------------------------------------------------
-                | TITLE
-                |--------------------------------------------------------------------------
-                */
-
                 TextColumn::make('title')
                     ->label('Judul')
                     ->searchable()
                     ->sortable()
                     ->limit(40)
                     ->weight('bold'),
-
-                    /*
-                |--------------------------------------------------------------------------
-                | ICON FILE
-                |--------------------------------------------------------------------------
-                */
 
                 TextColumn::make('document_file')
                     ->label('Tipe Dokumen')
@@ -65,35 +53,17 @@ class DocumentsTable
 
                     }),
 
-                /*
-                |--------------------------------------------------------------------------
-                | CATEGORY
-                |--------------------------------------------------------------------------
-                */
-
                 TextColumn::make('category.name')
                     ->label('Kategori')
                     ->badge()
                     ->sortable()
                     ->searchable(),
 
-                /*
-                |--------------------------------------------------------------------------
-                | DOWNLOAD
-                |--------------------------------------------------------------------------
-                */
-
                 TextColumn::make('download_count')
                     ->label('Download')
                     ->sortable()
                     ->badge()
                     ->color('success'),
-
-                /*
-                |--------------------------------------------------------------------------
-                | STATUS
-                |--------------------------------------------------------------------------
-                */
 
                 TextColumn::make('status')
                     ->badge()
@@ -106,23 +76,6 @@ class DocumentsTable
                         'danger' => 'archived',
 
                     ]),
-
-                /*
-                |--------------------------------------------------------------------------
-                | FEATURED
-                |--------------------------------------------------------------------------
-                */
-
-                IconColumn::make('is_featured')
-                    ->label('Unggulan')
-                    ->boolean(),
-
-                /*
-                |--------------------------------------------------------------------------
-                | PUBLISHED
-                |--------------------------------------------------------------------------
-                */
-
                 TextColumn::make('published_at')
                     ->label('Publish')
                     ->dateTime('d M Y')
@@ -150,11 +103,10 @@ class DocumentsTable
             ])
 
             ->recordActions([
-
-                EditAction::make(),
-
-                DeleteAction::make(),
-
+                ActionGroup::make([
+                    EditAction::make(),
+                    DeleteAction::make(),
+                ]),
             ])
 
             ->toolbarActions([

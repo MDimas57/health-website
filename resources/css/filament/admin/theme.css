@@ -8,95 +8,69 @@
    Sidebar
 ========================= */
 
-/* =========================
-   Sidebar
-========================= */
-
-.fi-sidebar {
-    @apply bg-slate-900;
+.fi-sidebar,
+.fi-sidebar-nav {
+    background-color: #0f172a; /* slate-900 */
 }
 
-/* Semua link */
-.fi-sidebar a {
-    @apply text-slate-300;
+/* Item menu (default) */
+.fi-sidebar-item > a,
+.fi-sidebar-item > button {
+    border-radius: 0.75rem;
+    transition: background-color 0.15s;
 }
 
-/* Semua icon */
-.fi-sidebar svg {
-    @apply text-slate-400;
+.fi-sidebar-item-label {
+    color: #cbd5e1; /* slate-300 */
+    font-weight: 500;
 }
 
-/* Hover */
-.fi-sidebar a:hover {
-    @apply bg-slate-800 text-white;
+.fi-sidebar-item-icon {
+    color: #94a3b8; /* slate-400 */
 }
 
-.fi-sidebar a:hover svg {
-    @apply text-cyan-400;
+/* Hover (item non-aktif) */
+.fi-sidebar-item:not(.fi-active) > a:hover,
+.fi-sidebar-item:not(.fi-active) > button:hover {
+    background-color: #1e293b; /* slate-800 */
+}
+
+.fi-sidebar-item:not(.fi-active) > a:hover .fi-sidebar-item-label,
+.fi-sidebar-item:not(.fi-active) > button:hover .fi-sidebar-item-label {
+    color: #ffffff;
+}
+
+.fi-sidebar-item:not(.fi-active) > a:hover .fi-sidebar-item-icon,
+.fi-sidebar-item:not(.fi-active) > button:hover .fi-sidebar-item-icon {
+    color: #22d3ee; /* cyan-400 */
 }
 
 /* Menu aktif */
-.fi-sidebar a[aria-current="page"] {
-    @apply bg-cyan-600 text-white rounded-xl;
+.fi-sidebar-item.fi-active > a,
+.fi-sidebar-item.fi-active > a:hover,
+.fi-sidebar-item.fi-active > a:focus,
+.fi-sidebar-item.fi-active > button,
+.fi-sidebar-item.fi-active > button:hover,
+.fi-sidebar-item.fi-active > button:focus {
+    background-color: #0891b2 !important; /* cyan-600 */
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.25);
 }
 
-.fi-sidebar a[aria-current="page"] * {
-    @apply text-white;
+.fi-sidebar-item.fi-active .fi-sidebar-item-label,
+.fi-sidebar-item.fi-active .fi-sidebar-item-icon,
+.fi-sidebar-item.fi-active svg {
+    color: #ffffff !important;
 }
 
-.fi-sidebar a[aria-current="page"] svg {
-    @apply text-white;
-}
-
-/* Group label */
+/* Group label & chevron */
 .fi-sidebar-group-label {
-    @apply text-slate-400;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
 }
 
-/* =========================
-   Topbar
-========================= */
-
-.fi-topbar{
-    @apply bg-white dark:bg-gray-900;
-}
-
-/* =========================
-   Main
-========================= */
-
-.fi-main{
-    @apply bg-slate-50 dark:bg-gray-950;
-}
-
-/* =========================
-   Section
-========================= */
-
-.fi-section{
-    @apply bg-white dark:bg-gray-900;
-}
-
-/* =========================
-   Card
-========================= */
-
-.fi-card{
-    @apply bg-white dark:bg-gray-900;
-}
-
-/* =========================
-   Tables
-========================= */
-
-.fi-ta-table{
-    @apply bg-white dark:bg-gray-900;
-}
-
-/* =========================
-   Modal
-========================= */
-
-.fi-modal-window{
-    @apply bg-white dark:bg-gray-900;
+.fi-sidebar-group-collapse-button {
+    color: #94a3b8;
 }

@@ -19,8 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 class CategoryBannerResource extends Resource
 {
     protected static ?string $model = CategoryBanner::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPhoto;
     protected static ?string $navigationLabel = 'Banner Kategori';
     protected static string | \UnitEnum | null $navigationGroup = 'Website';
     protected static ?string $recordTitleAttribute = 'categorybanner';

@@ -42,32 +42,32 @@
     </div>
 
     {{-- CATEGORY (Perbaikan Mobile: Auto-scroll horizontal jika kategori penuh agar tidak merusak layout) --}}
-    <div class="flex items-center gap-3 mb-10 overflow-x-auto whitespace-nowrap pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-
-        <button
-            wire:click="$set('category', null)"
-            class="px-5 py-2.5 rounded-full text-xs md:text-sm font-semibold transition duration-200
-            {{ !$category
-                ? 'bg-red-500 text-white shadow-lg shadow-red-200'
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200'
-            }}"
-        >
-            Semua
-        </button>
-
-        @foreach($categories as $cat)
+    <div class="w-full overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 mb-8">
+        <div class="flex flex-nowrap sm:flex-wrap gap-2.5 pb-2 sm:pb-0">
             <button
-                wire:click="$set('category', {{ $cat->id }})"
-                class="px-5 py-2.5 rounded-full text-xs md:text-sm font-semibold transition duration-200
-                {{ $category == $cat->id
+                wire:click="$set('category', null)"
+                class="whitespace-nowrap px-5 py-2 rounded-full text-xs md:text-sm font-semibold transition shrink-0
+                {{ !$category
                     ? 'bg-red-500 text-white shadow-lg shadow-red-200'
                     : 'bg-white border border-slate-200 text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200'
                 }}"
             >
-                {{ $cat->name }}
+                Semua
             </button>
-        @endforeach
 
+            @foreach($categories as $cat)
+                <button
+                    wire:click="$set('category', {{ $cat->id }})"
+                    class="whitespace-nowrap px-5 py-2 rounded-full text-xs md:text-sm font-semibold transition shrink-0
+                    {{ $category == $cat->id
+                        ? 'bg-red-500 text-white shadow-lg shadow-red-200'
+                        : 'bg-white border border-slate-200 text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200'
+                    }}"
+                >
+                    {{ $cat->name }}
+                </button>
+            @endforeach
+        </div>
     </div>
 
     {{-- GRID (Perbaikan Mobile: Penggunaan Gap yang proporsional dari Mobile ke Desktop) --}}
@@ -207,7 +207,7 @@
 
                             {{-- VIEWS (Aksen Biru Medis Lembut) --}}
                             <span class="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg">
-                                👁 {{ number_format($video->views ?? 0) }}
+                                {{ number_format($video->views ?? 0) }} views
                             </span>
 
                         </div>

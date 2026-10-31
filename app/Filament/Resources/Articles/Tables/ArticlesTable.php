@@ -8,17 +8,11 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\BadgeColumn;
-
 use Filament\Tables\Filters\SelectFilter;
 
-/*
-|--------------------------------------------------------------------------
-| IMPORT ACTIONS
-|--------------------------------------------------------------------------
-*/
-
-use Filament\Actions\EditAction;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\BulkActionGroup;
 
@@ -40,7 +34,9 @@ class ArticlesTable
                     ->limit(40),
 
                 TextColumn::make('category.name')
-                    ->badge(),
+                    ->label('Kategori')
+                    ->badge()
+                    ->sortable(),
 
                 BadgeColumn::make('status')
                     ->colors([
@@ -49,32 +45,41 @@ class ArticlesTable
                         'danger' => 'archived',
                     ]),
 
-                IconColumn::make('is_featured')
-                    ->boolean(),
-
-                TextColumn::make('views'),
+                TextColumn::make('views')
+                    ->label('Views')
+                    ->sortable(),
 
                 TextColumn::make('published_at')
-                    ->dateTime('d M Y'),
+                    ->label('Dipublikasikan')
+                    ->dateTime('d M Y')
+                    ->sortable(),
 
             ])
 
             ->filters([
 
                 SelectFilter::make('status')
+                    ->label('Status')
                     ->options([
                         'draft' => 'Draft',
                         'published' => 'Published',
                         'archived' => 'Archived',
-                    ])
+                    ]),
 
+                SelectFilter::make('category_id')
+                    ->label('Kategori')
+                    ->relationship('category', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->visible(fn () => auth()->user()->hasRole('super_admin')),
             ])
 
             ->recordActions([
 
+               ActionGroup::make([
                 EditAction::make(),
-
                 DeleteAction::make(),
+            ]),
 
             ])
 

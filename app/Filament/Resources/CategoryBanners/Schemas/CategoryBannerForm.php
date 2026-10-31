@@ -8,8 +8,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Hidden;
-
 
 class CategoryBannerForm
 {
@@ -33,6 +31,7 @@ class CategoryBannerForm
             Textarea::make('subtitle'),
 
             FileUpload::make('image')
+                ->label('Banner Image')
                 ->image()
                 ->imageEditor()
                 ->disk('public')

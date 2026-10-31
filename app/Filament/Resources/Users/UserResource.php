@@ -18,9 +18,12 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
     protected static ?string $recordTitleAttribute = 'user';
+    
+    protected static ?string $navigationLabel = 'Pengguna';
 
     protected static string | \UnitEnum | null $navigationGroup = 'Master Data';
 
@@ -33,6 +36,7 @@ class UserResource extends Resource
     {
         return UsersTable::configure($table);
     }
+
     public static function canAccess(): bool
     {
         return auth()->user()?->hasRole('super_admin');

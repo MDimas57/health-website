@@ -74,7 +74,7 @@
                                    border border-white/20
                                    text-white font-semibold text-sm"
                         >
-                            🩺 {{ $article->category->name }}
+                             {{ $article->category->name }}
                         </span>
 
                     </div>
@@ -131,7 +131,7 @@
                                    border border-white/10
                                    text-white text-sm font-medium"
                         >
-                            📅 {{ $article->published_at?->format('d F Y') }}
+                            Dibuat: {{ $article->published_at?->format('d F Y') }}
                         </div>
 
                         {{-- VIEWS (Ubah warna dari hijau ke biru medis) --}}
@@ -140,7 +140,7 @@
                                    bg-blue-600/80 backdrop-blur-md
                                    text-white text-sm font-medium shadow-sm"
                         >
-                            👁 {{ number_format($article->views ?? 0) }} views
+                            {{ number_format($article->views ?? 0) }} views
                         </div>
 
                     </div>
@@ -169,33 +169,213 @@
         >
 
             <div
-                class="article-content
-                       prose md:prose-lg
-                       max-w-none
+    class="article-content
+           prose md:prose-lg
+           max-w-none
 
-                       prose-headings:font-bold
-                       prose-headings:text-slate-900
+           prose-headings:font-bold
+           prose-headings:text-slate-900
 
-                       prose-p:text-slate-700
-                       prose-p:leading-8
+           prose-p:text-slate-700
+           prose-p:leading-8
 
-                       prose-a:text-indigo-600 hover:prose-a:text-indigo-700
+           prose-a:text-indigo-600 hover:prose-a:text-indigo-700
 
-                       prose-strong:text-slate-900
+           prose-strong:text-slate-900
 
-                       prose-img:rounded-2xl
-                       prose-img:shadow-lg
+           prose-img:rounded-2xl
+           prose-img:shadow-lg
 
-                       prose-blockquote:border-indigo-500
-                       prose-blockquote:bg-indigo-50/50
-                       prose-blockquote:rounded-xl
-                       prose-blockquote:px-6
-                       prose-blockquote:py-3"
-            >
+           prose-blockquote:border-indigo-500
+           prose-blockquote:bg-indigo-50/50
+           prose-blockquote:rounded-xl
+           prose-blockquote:px-6
+           prose-blockquote:py-3"
+>
 
-                {!! str($article->content)->sanitizeHtml() !!}
+@if(!empty($article->content_blocks))
 
-            </div>
+    @foreach($article->content_blocks as $block)
+
+        @switch($block['type'])
+
+            {{-- ========================= --}}
+            {{-- PARAGRAPH --}}
+            {{-- ========================= --}}
+
+            @case('paragraph')
+
+                {!! str($block['data']['text'] ?? '')->sanitizeHtml() !!}
+
+                @break
+
+
+            {{-- ========================= --}}
+            {{-- IMAGE --}}
+            {{-- ========================= --}}
+
+            @case('image')
+
+                <figure class="my-8 flex flex-col items-center ">
+
+                    <div class="max-w-2xl w-full overflow-hidden ">
+                        <img
+                            src="{{ Storage::url($block['data']['image']) }}"
+                            alt="{{ $block['data']['title'] ?? '' }}"
+                            class="w-full h-auto max-h-[500px] object-contain mx-auto my-0"
+                        >
+                    </div>
+
+                    @if(!empty($block['data']['title']))
+
+                        <figcaption
+                            class="mt-3
+                                text-center
+                                text-sm
+                                text-slate-500
+                                italic"
+                        >
+                            {{ $block['data']['title'] }}
+                        </figcaption>
+
+                    @endif
+
+                </figure>
+
+                @break
+
+
+            {{-- ========================= --}}
+            {{-- LINK --}}
+            {{-- ========================= --}}
+
+            @case('link')
+
+                <div class="my-6">
+
+                    <a
+                        href="{{ $block['data']['url'] }}"
+                        target="_blank"
+                        class="inline-flex
+                               items-center
+                               gap-1.5
+                               font-medium
+                               !text-blue-600
+                               hover:!text-blue-800
+                               hover:underline
+                               break-all"
+                    >
+                        <span>{{ $block['data']['title'] ?: $block['data']['url'] }}</span>
+                        
+                        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                        </svg>
+                    </a>
+
+                </div>
+
+                @break
+
+
+            {{-- ========================= --}}
+            {{-- TABLE --}}
+            {{-- ========================= --}}
+
+            @case('table')
+
+                <div class="my-10 overflow-x-auto">
+
+                    @if(!empty($block['data']['title']))
+
+                        <h3
+                            class="text-xl
+                                   font-bold
+                                   text-slate-900
+                                   px-6 py-4 border-b border-slate-200 bg-slate-50/50
+                                   mb-0"
+                        >
+                            {{ $block['data']['title'] }}
+                        </h3>
+
+                    @endif
+
+                    @php
+                        $table = $block['data']['data'] ?? [];
+                    @endphp
+
+                    <table
+                        class="min-w-full
+                               divide-y divide-slate-200"
+                    >
+
+                        <thead>
+
+                            <tr class="bg-slate-50">
+
+                                @foreach($table['headers'] ?? [] as $header)
+
+                                    <th
+                                        scope="col"
+                                        class="px-6
+                                               py-4
+                                               text-left
+                                               text-sm
+                                               font-bold
+                                               text-slate-800
+                                               tracking-wider"
+                                    >
+                                        {{ $header }}
+                                    </th>
+
+                                @endforeach
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody class="bg-white divide-y divide-slate-100">
+
+                            @foreach($table['rows'] ?? [] as $row)
+
+                                <tr class="hover:bg-slate-50/80 transition-colors duration-150">
+
+                                    @foreach($row as $cell)
+
+                                        <td
+                                            class="px-6
+                                                   py-4
+                                                   text-sm
+                                                   text-slate-600
+                                                   whitespace-normal"
+                                        >
+                                            {{ $cell }}
+                                        </td>
+
+                                    @endforeach
+
+                                </tr>
+
+                            @endforeach
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                @break
+
+        @endswitch
+
+    @endforeach
+
+@else
+
+    {!! str($article->content)->sanitizeHtml() !!}
+
+@endif
+
+</div>
 
         </div>
 
@@ -274,15 +454,6 @@
 
         {{-- HEADER --}}
         <div class="mb-12 text-center">
-
-            <div
-                class="inline-flex items-center gap-2
-                       px-4 py-2 rounded-full
-                       bg-indigo-50 border border-indigo-100 text-indigo-700
-                       text-sm font-medium mb-4"
-            >
-                📚 Rekomendasi Bacaan
-            </div>
 
             <h2 class="text-2xl lg:text-3xl font-black text-slate-900">
                 Artikel Terkait

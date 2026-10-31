@@ -11,18 +11,19 @@
         get whatsappLink(){
             if(!this.current || !this.current.consultation_phone) return 'javascript:void(0)';
 
-            return 'https://wa.me/' + this.current.consultation_phone.replace(/[^0-9]/g,'');
+            let phone = this.current.consultation_phone.replace(/[^0-9]/g, '');
+            if (phone.startsWith('0')) {
+                phone = '62' + phone.slice(1);
+            }
+
+            return 'https://wa.me/' + phone;
         },
 
         get isAvailable(){
             return this.current && this.current.consultation_phone && this.current.consultation_name;
         }
     }"
-    class="relative py-12 md:py-20
-           w-screen
-           ml-[calc(50%-50vw)]
-           overflow-hidden
-           bg-white"> {{-- Menggunakan bg-white penuh ke kanan-kiri layar --}}
+    class="relative py-12 md:py-20 w-screen ml-[calc(50%-50vw)] overflow-hidden bg-white"> {{-- Menggunakan bg-white penuh ke kanan-kiri layar --}}
     {{-- PEMBUNGKUS KONTEN UTAMA: Menjamin lebar & alignment sejajar pas dengan Section Video --}}
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

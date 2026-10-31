@@ -18,11 +18,13 @@ use Filament\Tables\Table;
 
 class CategoryResource extends Resource
 {
-   protected static ?string $model = Category::class;
+    protected static ?string $model = Category::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
     protected static ?string $recordTitleAttribute = 'category';
+    
+    protected static ?string $navigationLabel = 'Kategori';
 
     protected static string | \UnitEnum | null $navigationGroup = 'Master Data';
 
@@ -35,6 +37,7 @@ class CategoryResource extends Resource
     {
         return CategoryInfolist::configure($schema);
     }
+
     public static function canAccess(): bool
     {
         return auth()->user()?->hasRole('super_admin');

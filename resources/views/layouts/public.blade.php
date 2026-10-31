@@ -31,6 +31,15 @@
     96% { transform: rotate(-5deg); }
     98% { transform: rotate(3deg); }
 }
+/* Pastikan seluruh teks di dalam konten artikel bisa turun ke bawah secara otomatis */
+.article-content p, 
+.article-content span, 
+.article-content li, 
+.article-content td, 
+.article-content th {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
 </style>
  @stack('scripts')
 @unless(Route::is('consultation'))

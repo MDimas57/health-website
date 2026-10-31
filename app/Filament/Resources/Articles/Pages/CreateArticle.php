@@ -24,11 +24,34 @@ class CreateArticle extends CreateRecord
             $data['published_at'] = now();
         }
 
+        $data['content'] = $this->buildContentFromBlocks(
+        $data['content_blocks'] ?? []
+        );
+
         return $data;
     }
 
     protected function getRedirectUrl(): string
     {
         return static::getResource()::getUrl('index');
+    }
+
+    protected function buildContentFromBlocks(array $blocks): string
+    {
+        $content = '';
+
+        foreach ($blocks as $block) {
+
+            switch ($block['type']) {
+
+                case 'paragraph':
+                    $content .= ($block['data']['text'] ?? '') . PHP_EOL . PHP_EOL;
+                    break;
+
+            }
+
+        }
+
+        return trim($content);
     }
 }

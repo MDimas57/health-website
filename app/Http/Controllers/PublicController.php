@@ -64,7 +64,7 @@ class PublicController extends Controller
                 $query->where('id', '!=', $featuredArticle->id);
             })
             ->latest('published_at')
-            ->take(2)
+            ->take(3)
             ->get()
             ->map(function ($item) {
                 $item->content_type = 'article';
@@ -74,7 +74,7 @@ class PublicController extends Controller
         $latestVideos = Video::with('category')
             ->where('status', 'published')
             ->latest('published_at')
-            ->take(2)
+            ->take(3)
             ->get()
             ->map(function ($item) {
                 $item->content_type = 'video';

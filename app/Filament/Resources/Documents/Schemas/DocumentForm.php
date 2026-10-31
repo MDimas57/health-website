@@ -2,70 +2,56 @@
 
 namespace App\Filament\Resources\Documents\Schemas;
 
-use Filament\Schemas\Schema;
+use Filament\Forms\Components\FileUpload;
+use Filament\Schemas\Components\Group;
+use Filament\Forms\Components\RichEditor;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Grid;
-
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\RichEditor\ToolbarButtonGroup;
 class DocumentForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns([
+                'default' => 1,
+                'lg' => 3, // Membagi form menjadi 3 kolom grid utama
+            ])
             ->components([
 
-                Section::make('Informasi Dokumen')
+                // ==========================================
+                // KONTEN UTAMA (KIRI - SPAN 2)
+                // ==========================================
+                Group::make()
                     ->schema([
-
-                        Grid::make(2)
+                        Section::make('Informasi Utama')
                             ->schema([
-
-                                Select::make('category_id')
-                                    ->label('Kategori')
-                                    ->relationship('category', 'name')
-                                    ->searchable()
-                                    ->preload()
+                                TextInput::make('title')
+                                    ->label('Judul Dokumen')
+                                    ->placeholder('Masukkan judul dokumen...')
                                     ->required()
-                                    ->default(fn () => auth()->user()->category_id)
-                                    ->disabled(fn () => auth()->user()->hasRole('contributor'))
-                                    ->dehydrated(),
+                                    ->maxLength(255),
 
-                                Select::make('status')
-                                    ->label('Status')
-                                    ->options([
-                                        'draft' => 'Draft',
-                                        'published' => 'Published',
-                                        'archived' => 'Archived',
+                                RichEditor::make('text')
+                                    ->label('Deskripsi Dokumen')
+                                    ->toolbarButtons([
+                                        ['bold', 'italic', 'underline', 'strike','link'],
+                                        [ToolbarButtonGroup::make('Heading', ['h1', 'h2', 'h3'])->icon('fi-o-heading')],
+                                        [ToolbarButtonGroup::make('Alignment', ['alignStart', 'alignCenter', 'alignEnd', 'alignJustify'])],
+                                        ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
+                                        ['undo', 'redo'],
                                     ])
-                                    ->default('draft')
-                                    ->required(),
-
+                                    ->columnSpanFull(),
                             ]),
 
-                        TextInput::make('title')
-                            ->label('Judul Dokumen')
-                            ->required()
-                            ->maxLength(255),
-
-                        RichEditor::make('description')
-                            ->label('Deskripsi')
-                            ->columnSpanFull(),
-
-                    ]),
-
-                Section::make('Upload File')
-                    ->schema([
-
-                        Grid::make(1)
+                        Section::make('Berkas Dokumen')
+                            ->description('Unggah berkas dokumen (PDF, Word, atau PowerPoint).')
                             ->schema([
-
                                 FileUpload::make('document_file')
-                                    ->label('Dokumen')
+                                    ->label('Unggah File')
                                     ->disk('public')
                                     ->directory('documents')
                                     ->acceptedFileTypes([
@@ -79,35 +65,59 @@ class DocumentForm
                                     ->openable()
                                     ->previewable(false)
                                     ->required()
+                                    ->live()
                                     ->afterStateUpdated(function ($state, callable $set) {
-
-                                        if (!$state) {
+                                        if (! $state) {
+                                            $set('file_size', null);
                                             return;
                                         }
 
-                                        $path = storage_path('app/public/' . $state);
+                                        $filePath = is_array($state) ? reset($state) : $state;
+                                        $path = storage_path('app/public/' . $filePath);
 
                                         if (file_exists($path)) {
                                             $set('file_size', filesize($path));
                                         }
                                     }),
-
                             ]),
+                    ])
+                    ->columnSpan(['lg' => 2]),
 
-                    ]),
-
-                Section::make('Publikasi')
+                // ==========================================
+                // SIDEBAR METADATA (KANAN - SPAN 1)
+                // ==========================================
+                Group::make()
                     ->schema([
-
-                        Grid::make(1)
+                        Section::make('Atribut & Status')
                             ->schema([
+                                Select::make('category_id')
+                                    ->label('Kategori')
+                                    ->relationship('category', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->default(fn () => auth()->user()?->category_id)
+                                    ->disabled(fn () => auth()->user()?->hasRole('contributor'))
+                                    ->dehydrated(),
+
+                                Select::make('status')
+                                    ->label('Status')
+                                    ->options([
+                                        'draft' => 'Draft',
+                                        'published' => 'Published',
+                                        'archived' => 'Archived',
+                                    ])
+                                    ->default('draft')
+                                    ->native(false)
+                                    ->required(),
 
                                 Toggle::make('is_featured')
-                                    ->label('Dokumen Unggulan'),
-
+                                    ->label('Dokumen Unggulan')
+                                    ->helperText('Tampilkan dokumen ini sebagai unggulan di halaman depan.')
+                                    ->inline(false),
                             ]),
-
-                    ]),
+                    ])
+                    ->columnSpan(['lg' => 1]),
 
             ]);
     }

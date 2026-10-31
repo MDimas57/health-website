@@ -82,7 +82,7 @@
                 </span>
                 <span class="text-slate-300">|</span>
                 <span class="flex items-center gap-1.5">
-                    👁 {{ number_format($poster->views) }} x dilihat
+                    {{ number_format($poster->views) }} x dilihat
                 </span>
             </div>
 

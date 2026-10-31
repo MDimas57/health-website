@@ -23,7 +23,9 @@ class HeroBannersTable
 
                 ImageColumn::make('image')
                     ->label('Banner')
-                    ->square(),
+                    ->disk('public')
+                    ->square()
+                    ->size(70),
 
                 TextColumn::make('title')
                     ->label('Judul')

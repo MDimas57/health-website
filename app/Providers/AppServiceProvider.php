@@ -10,6 +10,9 @@ use App\Observers\CategoryObserver;
 use Illuminate\Support\Facades\Schema;
 
 
+
+
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -46,6 +49,6 @@ class AppServiceProvider extends ServiceProvider
             ->get();
 
         $view->with('footerRecentPosts', $footerRecentPosts);
-    });
+        });
     }
 }

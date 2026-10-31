@@ -169,7 +169,7 @@
                                 </span>
                                 <span>•</span>
                                 <span class="whitespace-nowrap">
-                                    👁 {{ number_format($poster->views ?? 0) }}
+                                    {{ number_format($poster->views ?? 0) }} views
                                 </span>
                             </div>
 
