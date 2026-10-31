@@ -63,7 +63,7 @@ class Article extends Model
     {
         static::saving(function ($article) {
             // 1. Konversi Thumbnail Utama ke WebP
-            if ($article->isDirty('thumbnail') || $article->thumbnail) {
+            if ($article->thumbnail) {
                 $article->thumbnail = self::convertToWebpIfNeeded($article->thumbnail);
             }
 
@@ -93,49 +93,51 @@ class Article extends Model
     /**
      * Helper privat untuk mengonversi gambar ke format WebP menggunakan GD Library
      */
-    private static function convertToWebpIfNeeded(?string $originalPath): ?string
-    {
-        if (!$originalPath || !Storage::disk('public')->exists($originalPath)) {
-            return $originalPath;
-        }
+   private static function convertToWebpIfNeeded(?string $originalPath): ?string
+        {
+            if (!$originalPath || !Storage::disk('public')->exists($originalPath)) {
+                return $originalPath;
+            }
 
-        $fullPath = Storage::disk('public')->path($originalPath);
-        $extension = pathinfo($fullPath, PATHINFO_EXTENSION);
+            $fullPath = Storage::disk('public')->path($originalPath);
+            $extLower = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
 
-        // Jika sudah berformat webp, lewati
-        if (strtolower($extension) === 'webp') {
-            return $originalPath;
-        }
+            if ($extLower === 'webp' || !function_exists('imagewebp')) {
+                return $originalPath;
+            }
 
-        $imageResource = null;
-        $extLower = strtolower($extension);
+            $imageResource = match ($extLower) {
+                'jpg', 'jpeg' => @imagecreatefromjpeg($fullPath),
+                'png'         => @imagecreatefrompng($fullPath),
+                'gif'         => @imagecreatefromgif($fullPath),
+                default       => false,
+            };
 
-        if (in_array($extLower, ['jpg', 'jpeg'])) {
-            $imageResource = @imagecreatefromjpeg($fullPath);
-        } elseif ($extLower === 'png') {
-            $imageResource = @imagecreatefrompng($fullPath);
-        } elseif ($extLower === 'gif') {
-            $imageResource = @imagecreatefromgif($fullPath);
-        }
+            if (!$imageResource) {
+                return $originalPath;
+            }
 
-        if ($imageResource) {
+            // Penyebab error: PNG palette (indexed) harus diubah ke true color
+            if (!imageistruecolor($imageResource)) {
+                imagepalettetotruecolor($imageResource);
+            }
+            imagealphablending($imageResource, true);
+            imagesavealpha($imageResource, true);
+
             $newPath = preg_replace('/\.[^.]+$/', '.webp', $originalPath);
             $newFullPath = Storage::disk('public')->path($newPath);
 
-            // Simpan ke webp dengan kualitas 80
-            imagewebp($imageResource, $newFullPath, 80);
+            $saved = @imagewebp($imageResource, $newFullPath, 80);
             imagedestroy($imageResource);
 
-            // Hapus file lama yang non-webp
-            if ($originalPath !== $newPath && Storage::disk('public')->exists($originalPath)) {
+            // File asli hanya dihapus jika konversi berhasil
+            if ($saved && file_exists($newFullPath) && $originalPath !== $newPath) {
                 Storage::disk('public')->delete($originalPath);
+                return $newPath;
             }
 
-            return $newPath;
+            return $originalPath;
         }
-
-        return $originalPath;
-    }
 
     /*
     |--------------------------------------------------------------------------
