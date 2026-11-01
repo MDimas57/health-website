@@ -1,5 +1,21 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 
+<style>
+    /* Scrollbar rapi untuk daftar topik (desktop dropdown & mobile) */
+    .nav-category-scroll,
+    .mobile-category-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: #c7d2fe transparent;
+    }
+    .nav-category-scroll::-webkit-scrollbar,
+    .mobile-category-scroll::-webkit-scrollbar { width: 6px; }
+    .nav-category-scroll::-webkit-scrollbar-thumb,
+    .mobile-category-scroll::-webkit-scrollbar-thumb {
+        background: #c7d2fe;
+        border-radius: 999px;
+    }
+</style>
+
 <nav x-data="{ mobileMenu:false }"
      class="sticky top-0 z-50
         bg-gradient-to-r
@@ -23,7 +39,7 @@
 
                     <div class="relative">
 
-                        {{-- Glow Aura diubah ke Ungu --}}
+                        {{-- Glow Aura --}}
                         <div class="absolute inset-0
                                     bg-purple-500/20
                                     blur-xl rounded-full">
@@ -46,7 +62,6 @@
                             PortalSehat
                         </h1>
 
-                        {{-- Text diubah dari emerald ke indigo terang --}}
                         <p class="text-white text-sm">
                             Kesehatan Masyarakat
                         </p>
@@ -109,6 +124,7 @@
                     after:transition-all">
                         Video
                     </a>
+
                     {{-- DOCUMENTS --}}
                     <a href="{{ route('documents.index') }}"
                     class="relative text-[16px] font-semibold transition
@@ -143,19 +159,21 @@
                                     group-hover:translate-y-0
                                     transition-all duration-300">
 
-                            <div class="w-[460px]
-                                        bg-white/95
-                                        backdrop-blur-xl
+                            {{-- flex-col + max-h: panel tidak pernah melebihi tinggi layar --}}
+                            <div class="w-[520px]
+                                        max-h-[calc(100vh-7rem)]
+                                        flex flex-col
+                                        bg-white
                                         rounded-3xl
                                         shadow-2xl
                                         border border-slate-100
                                         overflow-hidden">
 
-                                {{-- HEADER DROPDOWN --}}
-                                <div class="px-6 py-5
+                                {{-- HEADER DROPDOWN (tetap di atas, tidak ikut scroll) --}}
+                                <div class="shrink-0 px-6 py-5
                                             bg-gradient-to-r
-                                            from-blue-50/50
-                                            to-indigo-50/50
+                                            from-blue-50
+                                            to-indigo-50
                                             border-b border-slate-100">
                                     <h3 class="font-bold text-slate-800 text-lg">
                                         Topik Kesehatan
@@ -165,8 +183,12 @@
                                     </p>
                                 </div>
 
-                                {{-- CATEGORY LIST --}}
-                                <div class="grid grid-cols-2 gap-2 p-4">
+                                {{-- CATEGORY LIST (area yang bisa di-scroll) --}}
+                                <div class="nav-category-scroll
+                                            flex-1 min-h-0
+                                            overflow-y-auto overscroll-contain
+                                            grid grid-cols-2 gap-2 p-4
+                                            content-start items-start">
                                     @foreach($navCategories as $category)
                                         <a href="{{ route('category.show', $category->slug) }}"
                                            class="group/item
@@ -178,7 +200,7 @@
                                                   hover:shadow-md
                                                   transition-all duration-300">
 
-                                            {{-- ICON (Diubah ke Gradasi Ungu-Indigo) --}}
+                                            {{-- ICON --}}
                                             <div class="w-12 h-12 rounded-2xl
                                                         bg-gradient-to-br
                                                         from-purple-500
@@ -193,7 +215,7 @@
                                             </div>
 
                                             {{-- TEXT --}}
-                                            <div>
+                                            <div class="min-w-0">
                                                 <h4 class="font-semibold text-slate-800
                                                            group-hover/item:text-indigo-700
                                                            transition">
@@ -246,7 +268,7 @@
                     <i class="ti ti-search text-lg"></i>
                 </a>
 
-                {{-- CTA BUTTON (Diubah ke Merah Medis yang Hangat) --}}
+                {{-- CTA BUTTON --}}
                 <a href="{{ route('articles.index') }}"
                    class="px-5 py-2.5
                           rounded-xl
@@ -278,13 +300,15 @@
             x-cloak
             class="xl:hidden pb-6"
         >
+            {{-- max-h + overflow-y-auto: menu mobile tidak terpotong di layar kecil --}}
             <div class="mt-3
+                        max-h-[calc(100vh-7rem)]
+                        overflow-y-auto overscroll-contain
                         bg-white/95
                         backdrop-blur-xl
                         rounded-[18px]
                         shadow-2xl
-                        border border-slate-100
-                        overflow-hidden">
+                        border border-slate-100">
 
                 {{-- BERANDA MOBILE --}}
                 <a href="{{ route('home') }}"
@@ -403,6 +427,7 @@
                                 {{ request()->routeIs('videos.*') ? 'w-full' : 'w-0 group-hover:w-full' }}">
                     </span>
                 </a>
+
                 {{-- DOKUMEN MOBILE --}}
                 <a href="{{ route('documents.index') }}"
                    class="group relative
@@ -462,7 +487,7 @@
                     </button>
 
                     <div x-show="openCategory" x-collapse class="px-5 pb-5">
-                        <div class="mobile-category-scroll max-h-[220px] overflow-y-auto pr-2 space-y-2">
+                        <div class="mobile-category-scroll max-h-[220px] overflow-y-auto overscroll-contain pr-2 space-y-2">
                             @foreach($navCategories as $category)
                                 <a href="{{ route('category.show', $category->slug) }}"
                                    class="group
@@ -472,7 +497,7 @@
                                         hover:from-blue-50/50
                                         hover:to-indigo-50/50
                                         transition">
-                                    <div class="w-9 h-9 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center group-hover:bg-purple-100 group-hover:text-purple-700 transition">
+                                    <div class="w-9 h-9 shrink-0 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center group-hover:bg-purple-100 group-hover:text-purple-700 transition">
                                         <i class="ti ti-{{ $category->icon ?: 'bulb' }}"></i>
                                     </div>
                                     <span class="text-sm text-slate-700 group-hover:text-indigo-700">
@@ -484,7 +509,7 @@
                     </div>
                 </div>
 
-                {{-- CTA MOBILE (Merah) --}}
+                {{-- CTA MOBILE --}}
                 <div class="p-5 pt-0">
                     <a href="{{ route('articles.index') }}"
                        class="w-full flex items-center justify-center
