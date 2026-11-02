@@ -41,7 +41,10 @@
     word-break: break-word;
 }
 </style>
- @stack('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+@stack('scripts')
 @unless(Route::is('consultation'))
 <a href="{{ route('consultation') }}"
    class="fixed bottom-6 right-6 z-50 group pointer-events-auto"

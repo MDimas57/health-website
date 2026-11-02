@@ -10,8 +10,7 @@ use App\Models\Category;
 use App\Models\CategoryBanner;
 use App\Models\Note;
 use App\Models\HeroBanner;
-
-
+use App\Models\Consultation; // BARU
 
 class PublicController extends Controller
 {
@@ -43,9 +42,10 @@ class PublicController extends Controller
 
         $categories = Category::orderBy('name')->get();
 
-        $consultationCategories = Category::whereNotNull('consultation_phone')
-            ->orderBy('name')
-            ->get();
+        // DIUBAH: data konsultasi sekarang dari model Consultation
+        $consultations = Consultation::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get(['id', 'topic', 'officer_name','photo', 'bio', 'phone']);
 
         $featuredArticle = Article::with('category')
             ->where('status', 'published')
@@ -85,6 +85,7 @@ class PublicController extends Controller
             ->merge($latestVideos)
             ->sortByDesc('published_at')
             ->take(6);
+
         $banners = HeroBanner::where('is_active', true)
             ->orderBy('sort_order')
             ->get();
@@ -94,64 +95,61 @@ class PublicController extends Controller
             'posters',
             'videos',
             'categories',
-            'consultationCategories',
+            'consultations', // DIUBAH (sebelumnya consultationCategories)
             'featuredArticle',
             'featuredPosters',
             'latestPosts',
             'banners'
         ));
-        
     }
 
     public function home()
-{
-    $featuredArticle = Article::with('category')
-        ->published()
-        ->latest('published_at')
-        ->first();
+    {
+        $featuredArticle = Article::with('category')
+            ->published()
+            ->latest('published_at')
+            ->first();
 
-    $featuredPosters = Poster::with('category')
-        ->published()
-        ->latest('published_at')
-        ->take(5)
-        ->get();
+        $featuredPosters = Poster::with('category')
+            ->published()
+            ->latest('published_at')
+            ->take(5)
+            ->get();
 
-    $latestArticles = Article::with('category')
-        ->published()
-        ->when($featuredArticle, fn ($q) =>
-            $q->where('id', '!=', $featuredArticle->id)
-        )
-        ->latest('published_at')
-        ->take(3)
-        ->get()
-        ->map(function ($item) {
-            $item->content_type = 'article';
-            return $item;
-        });
+        $latestArticles = Article::with('category')
+            ->published()
+            ->when($featuredArticle, fn ($q) =>
+                $q->where('id', '!=', $featuredArticle->id)
+            )
+            ->latest('published_at')
+            ->take(3)
+            ->get()
+            ->map(function ($item) {
+                $item->content_type = 'article';
+                return $item;
+            });
 
-    $latestVideos = Video::with('category')
-        ->published()
-        ->latest('published_at')
-        ->take(3)
-        ->get()
-        ->map(function ($item) {
-            $item->content_type = 'video';
-            return $item;
-        });
+        $latestVideos = Video::with('category')
+            ->published()
+            ->latest('published_at')
+            ->take(3)
+            ->get()
+            ->map(function ($item) {
+                $item->content_type = 'video';
+                return $item;
+            });
 
-    $latestPosts = $latestArticles
-        ->merge($latestVideos)
-        ->sortByDesc('published_at')
-        ->take(6);
+        $latestPosts = $latestArticles
+            ->merge($latestVideos)
+            ->sortByDesc('published_at')
+            ->take(6);
 
-    return view('public.home', compact(
-        'featuredArticle',
-        'featuredPosters',
-        'latestPosts'
-    ));
-
-            
-}
+        return view('public.home', compact(
+            'featuredArticle',
+            'featuredPosters',
+            'latestPosts'
+        ));
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -159,48 +157,48 @@ class PublicController extends Controller
     |--------------------------------------------------------------------------
     */
 
-   public function articles(Request $request)
-{
-    $categoryId = $request->category;
-    $q = $request->q;
-    $sort = $request->sort ?? 'latest';
+    public function articles(Request $request)
+    {
+        $categoryId = $request->category;
+        $q = $request->q;
+        $sort = $request->sort ?? 'latest';
 
-    $articles = Article::with(['category', 'user'])
-        ->where('status', 'published')
+        $articles = Article::with(['category', 'user'])
+            ->where('status', 'published')
 
-        ->when($q, function ($query) use ($q) {
-            $query->where(function ($inner) use ($q) {
-                $inner->where('title', 'like', "%{$q}%")
-                      ->orWhere('content', 'like', "%{$q}%");
-            });
-        })
+            ->when($q, function ($query) use ($q) {
+                $query->where(function ($inner) use ($q) {
+                    $inner->where('title', 'like', "%{$q}%")
+                          ->orWhere('content', 'like', "%{$q}%");
+                });
+            })
 
-        ->when($categoryId, function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        })
+            ->when($categoryId, function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            })
 
-        ->when($sort == 'popular', fn($q) => $q->orderByDesc('views'))
-        ->when($sort == 'oldest', fn($q) => $q->oldest('published_at'), fn($q) => $q->latest('published_at'))
+            ->when($sort == 'popular', fn($q) => $q->orderByDesc('views'))
+            ->when($sort == 'oldest', fn($q) => $q->oldest('published_at'), fn($q) => $q->latest('published_at'))
 
-        ->paginate(9)
-        ->withQueryString();
+            ->paginate(9)
+            ->withQueryString();
 
-    $categories = Category::latest()->get();
+        $categories = Category::latest()->get();
 
-    // 🔥 JIKA AJAX REQUEST → RETURN PARTIAL ONLY
-    if ($request->ajax()) {
-        return view('public.articles.partials.grid', compact('articles'))->render();
+        // JIKA AJAX REQUEST → RETURN PARTIAL ONLY
+        if ($request->ajax()) {
+            return view('public.articles.partials.grid', compact('articles'))->render();
+        }
+
+        return view('public.articles.index', compact(
+            'articles',
+            'categories',
+            'categoryId',
+            'q',
+            'sort'
+        ));
     }
 
-    return view('public.articles.index', compact(
-        'articles',
-        'categories',
-        'categoryId',
-        'q',
-        'sort'
-    ));
-}
-                
     /*
     |--------------------------------------------------------------------------
     | ARTICLE DETAIL
@@ -216,7 +214,7 @@ class PublicController extends Controller
 
         $article->increment('views');
 
-        // RELATED ARTICLE (lebih relevan: berdasarkan kategori)
+        // RELATED ARTICLE (berdasarkan kategori)
         $relatedArticles = Article::with('category')
             ->where('status', 'published')
             ->where('category_id', $article->category_id)
@@ -269,132 +267,143 @@ class PublicController extends Controller
     }
 
     /*
-|--------------------------------------------------------------------------
-| POSTERS
-|--------------------------------------------------------------------------
-*/
+    |--------------------------------------------------------------------------
+    | POSTERS
+    |--------------------------------------------------------------------------
+    */
 
-public function posters()
-{
-    $posters = Poster::with(['category','user'])
-        ->published()
-        ->latest()
-        ->paginate(12);
+    public function posters()
+    {
+        $posters = Poster::with(['category', 'user'])
+            ->published()
+            ->latest()
+            ->paginate(12);
 
-    return view('public.posters.index', compact('posters'));
-}
+        return view('public.posters.index', compact('posters'));
+    }
+
     public function videos()
-{
-    $videos = Video::with(['category','user'])
-        ->published()
-        ->latest()
-        ->paginate(12);
+    {
+        $videos = Video::with(['category', 'user'])
+            ->published()
+            ->latest()
+            ->paginate(12);
 
-    return view('public.videos.index', compact('videos'));
+        return view('public.videos.index', compact('videos'));
+    }
+
+    public function category($slug)
+    {
+        $category = Category::where('slug', $slug)
+            ->firstOrFail();
+
+        $banner = CategoryBanner::where('category_id', $category->id)
+            ->where('is_active', true)
+            ->latest()
+            ->first();
+
+        $featuredArticle = Article::published()
+            ->where('category_id', $category->id)
+            ->latest('published_at')
+            ->first();
+
+        $articles = Article::published()
+            ->where('category_id', $category->id)
+            ->latest('published_at')
+            ->paginate(9);
+
+        $posters = Poster::published()
+            ->where('category_id', $category->id)
+            ->latest('published_at')
+            ->take(8)
+            ->get();
+
+        $videos = Video::published()
+            ->where('category_id', $category->id)
+            ->latest('published_at')
+            ->take(8)
+            ->get();
+
+        $notes = Note::where('category_id', $category->id)
+            ->where('is_active', true)
+            ->latest()
+            ->get();
+
+        return view('public.categories.show', compact(
+            'category',
+            'banner',
+            'featuredArticle',
+            'articles',
+            'posters',
+            'videos',
+            'notes'
+        ));
+    }
+
+    // poster show
+    public function posterShow($slug)
+    {
+        $poster = Poster::with([
+                'category',
+                'user'
+            ])
+            ->published()
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $poster->increment('views');
+
+        $relatedPosters = Poster::published()
+            ->where('category_id', $poster->category_id)
+            ->where('id', '!=', $poster->id)
+            ->latest()
+            ->take(6)
+            ->get();
+
+        return view(
+            'public.posters.show',
+            compact(
+                'poster',
+                'relatedPosters'
+            )
+        );
+    }
+
+    // video show
+    public function videoShow($slug)
+    {
+        $video = Video::with(['category', 'user'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $video->increment('views');
+
+        $relatedVideos = Video::published()
+            ->where('id', '!=', $video->id)
+            ->where('category_id', $video->category_id)
+            ->latest()
+            ->take(6)
+            ->get();
+
+        return view('public.videos.show', [
+            'video' => $video,
+            'relatedVideos' => $relatedVideos,
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | KONSULTASI (halaman terpisah)
+    |--------------------------------------------------------------------------
+    */
+
+    public function consultation()
+    {
+        // DIUBAH: tidak lagi memakai Category
+        $consultations = Consultation::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get(['id', 'topic', 'officer_name','photo', 'bio', 'phone']);
+
+        return view('public.consultation', compact('consultations'));
+    }
 }
-
-public function category($slug)
-{
-    $category = Category::where('slug', $slug)
-        ->firstOrFail();
-
-    $banner = CategoryBanner::where('category_id', $category->id)
-        ->where('is_active', true)
-        ->latest()
-        ->first();
-
-    $featuredArticle = Article::published()
-        ->where('category_id', $category->id)
-        ->latest('published_at')
-        ->first();
-
-    $articles = Article::published()
-        ->where('category_id', $category->id)
-        ->latest('published_at')
-        ->paginate(9);
-
-    $posters = Poster::published()
-        ->where('category_id', $category->id)
-        ->latest('published_at')
-        ->take(8)
-        ->get();
-
-    $videos = Video::published()
-        ->where('category_id', $category->id)
-        ->latest('published_at')
-        ->take(8)
-        ->get();
-    $notes = Note::where('category_id', $category->id)
-    ->where('is_active', true)
-    ->latest()
-    ->get();
-
-    return view('public.categories.show', compact(
-        'category',
-        'banner',
-        'featuredArticle',
-        'articles',
-        'posters',
-        'videos',
-        'notes'
-    ));
-}
-
-//poster show
-public function posterShow($slug)
-{
-    $poster = Poster::with([
-        'category',
-        'user'
-    ])
-    ->published()
-    ->where('slug', $slug)
-    ->firstOrFail();
-
-    $poster->increment('views');
-
-    $relatedPosters = Poster::published()
-        ->where('category_id', $poster->category_id)
-        ->where('id', '!=', $poster->id)
-        ->latest()
-        ->take(6)
-        ->get();
-
-    return view(
-        'public.posters.show',
-        compact(
-            'poster',
-            'relatedPosters'
-        )
-    );
-}
-
-//video show
-public function videoShow($slug)
-{
-    $video = Video::with(['category', 'user'])
-        ->where('slug', $slug)
-        ->firstOrFail();
-
-    $video->increment('views');
-
-    $relatedVideos = Video::published()
-        ->where('id', '!=', $video->id)
-        ->where('category_id', $video->category_id)
-        ->latest()
-        ->take(6)
-        ->get();
-
-    return view('public.videos.show', [
-        'video' => $video,
-        'relatedVideos' => $relatedVideos,
-    ]);
-}
-public function consultation()
-{
-    $categories = Category::orderBy('name')->get();
-
-    return view('public.consultation', compact('categories'));
-}   
-}
-

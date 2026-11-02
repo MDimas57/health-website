@@ -363,8 +363,20 @@
 
                 </div>
 
-                @break
+            @break
+            
+            {{-- ========================= --}}
+           @case('chart')
+                @include('public.articles.chart', ['block' => $block['data']])
+            @break
 
+            @case('demography')
+                @include('public.articles.demography', ['block' => $block['data']])
+            @break
+
+            {{-- ========================= --}}
+            {{-- DEFAULT --}}
+            {{-- ========================= --}}
         @endswitch
 
     @endforeach

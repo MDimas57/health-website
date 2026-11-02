@@ -255,19 +255,6 @@
             {{-- RIGHT (SEARCH & CTA) --}}
             <div class="hidden lg:flex items-center gap-3">
 
-                {{-- SEARCH --}}
-                <a href="{{ route('articles.index') }}"
-                   class="w-11 h-11
-                          rounded-xl
-                          bg-white/10
-                          border border-white/10
-                          text-white
-                          flex items-center justify-center
-                          hover:bg-white/20
-                          transition">
-                    <i class="ti ti-search text-lg"></i>
-                </a>
-
                 {{-- CTA BUTTON --}}
                 <a href="{{ route('articles.index') }}"
                    class="px-5 py-2.5
