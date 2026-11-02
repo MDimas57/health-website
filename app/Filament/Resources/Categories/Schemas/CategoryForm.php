@@ -29,12 +29,6 @@ class CategoryForm
                     ->required()
                     ->unique(ignoreRecord: true),
 
-                TextInput::make('consultation_name')
-                    ->label('Nama Konsultan'),
-
-                TextInput::make('consultation_phone')
-                    ->label('Nomor WhatsApp')
-                    ->tel(),
 
                 FileUpload::make('image')
                     ->label('Gambar Kategori')
