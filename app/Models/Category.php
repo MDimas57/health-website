@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -10,7 +11,7 @@ class Category extends Model
 {
     use HasSlug;
 
-      protected $fillable = [
+    protected $fillable = [
         'name',
         'slug',
         'image',
@@ -19,6 +20,82 @@ class Category extends Model
         'consultation_name',
         'consultation_phone',
     ];
+
+    protected static function booted()
+    {
+        static::saving(function ($category) {
+            if (!$category->image) {
+                return;
+            }
+
+            // Foto diganti -> hapus file lama
+            if ($category->isDirty('image')) {
+                $old = $category->getOriginal('image');
+                if ($old && $old !== $category->image) {
+                    Storage::disk('public')->delete($old);
+                }
+            }
+
+            // Foto baru ATAU foto lama (saat edit tanpa ganti foto) -> jadikan webp
+            $category->image = self::convertToWebpIfNeeded($category->image);
+        });
+
+        static::deleting(function ($category) {
+            if ($category->image) {
+                Storage::disk('public')->delete($category->image);
+            }
+        });
+    }
+
+    /**
+     * Konversi gambar ke WebP menggunakan GD.
+     */
+    private static function convertToWebpIfNeeded(?string $originalPath): ?string
+    {
+        if (!$originalPath || !Storage::disk('public')->exists($originalPath)) {
+            return $originalPath;
+        }
+
+        $fullPath = Storage::disk('public')->path($originalPath);
+        $extLower = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+
+        // Sudah webp atau GD tidak mendukung webp
+        if ($extLower === 'webp' || !function_exists('imagewebp')) {
+            return $originalPath;
+        }
+
+        $imageResource = match ($extLower) {
+            'jpg', 'jpeg' => @imagecreatefromjpeg($fullPath),
+            'png'         => @imagecreatefrompng($fullPath),
+            'gif'         => @imagecreatefromgif($fullPath),
+            default       => false,
+        };
+
+        if (!$imageResource) {
+            return $originalPath;
+        }
+
+        // Perbaikan error "Palette image not supported by webp"
+        if (!imageistruecolor($imageResource)) {
+            imagepalettetotruecolor($imageResource);
+        }
+        imagealphablending($imageResource, true);
+        imagesavealpha($imageResource, true);
+
+        $newPath     = preg_replace('/\.[^.]+$/', '.webp', $originalPath);
+        $newFullPath = Storage::disk('public')->path($newPath);
+
+        $saved = @imagewebp($imageResource, $newFullPath, 80);
+        imagedestroy($imageResource);
+
+        // File asli hanya dihapus jika konversi berhasil
+        if ($saved && file_exists($newFullPath) && $originalPath !== $newPath) {
+            Storage::disk('public')->delete($originalPath);
+            return $newPath;
+        }
+
+        return $originalPath;
+    }
 
     /**
      * Generate slug otomatis dari name
@@ -30,9 +107,6 @@ class Category extends Model
             ->saveSlugsTo('slug');
     }
 
-    /**
-     * Relasi ke posts
-     */
     public function posts()
     {
         return $this->hasMany(Post::class);
@@ -57,17 +131,19 @@ class Category extends Model
     {
         return $this->hasMany(CategoryBanner::class);
     }
-public function users()
+
+    public function users()
     {
         return $this->hasMany(User::class);
     }
 
     public function notes()
-{
-    return $this->hasMany(Note::class);
-}
-public function documents()
-{
-    return $this->hasMany(Document::class);
-}
+    {
+        return $this->hasMany(Note::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
 }
