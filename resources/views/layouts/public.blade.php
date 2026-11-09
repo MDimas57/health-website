@@ -90,6 +90,7 @@
 </a>
 @endunless
 <body class="bg-white text-slate-800">
+  @include('partials.hosting-alert')   {{-- HAPUS BARIS INI JIKA SUDAH DIBAYAR --}}
   @include('partials.navbar')
 
   <main>

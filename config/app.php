@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'hosting_alert'      => env('HOSTING_ALERT', false),
+    'hosting_expired_at' => env('HOSTING_EXPIRED_AT', null),
+
 ];
